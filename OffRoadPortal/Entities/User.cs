@@ -20,8 +20,8 @@ public class User
     public int Age { get; set; }
     public UserRole Role { get; set; }
     public string? Description { get; set; }
-    public string? Car { get; set; }
     public string? City { get; set; }
+    public virtual List<Car>? Cars { get; set; }
     public virtual List<Image>? Images { get; set; }
     public virtual List<Advertisement>? Advertisements { get; set; }
     public virtual List<Event>? Events { get; set; }
