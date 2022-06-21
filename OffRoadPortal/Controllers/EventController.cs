@@ -6,10 +6,10 @@
 // File: EventController.cs                                //
 /////////////////////////////////////////////////////////////
 
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using OffRoadPortal.Entities;
-using OffRoadPortal.Services;
+using OffRoadPortal.Dtos;
+using OffRoadPortal.Interfaces;
+using OffRoadPortal.Models;
 
 namespace OffRoadPortal.Controllers;
 
@@ -17,20 +17,60 @@ namespace OffRoadPortal.Controllers;
 [Route("/event")]
 public class EventController : ControllerBase
 {
-    private readonly OffRoadPortalDbContext _dbContext;
-    private readonly IMapper _mapper;
+    private readonly IEventService _eventService;
 
-    public EventController(OffRoadPortalDbContext dbContext, IMapper mapper)
+    public EventController(IEventService eventService)
     {
-        _dbContext = dbContext;
-        _mapper = mapper;
+        _eventService = eventService;
     }
-
 
     [HttpGet]
-    public ActionResult<IEnumerable<Event>> GetAll()
+    public ActionResult<IEnumerable<EventDto>> GetAll()
     {
-        return null;
+        var events = _eventService.GetAll();
+        return Ok(events);
     }
 
+    [HttpGet("{id})")]
+    public ActionResult<EventDto> GetById([FromRoute] long id)
+    {
+        var _event = _eventService.GetById(id);
+        if(_event == null ) return NotFound();
+        return Ok(_event);
+    }
+
+    [HttpPost]
+    public ActionResult CreateEvent([FromBody] CreateEventDto dto)
+    {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var createdEventId = _eventService.Create(dto);
+
+        return Created($"/event/{createdEventId}", null);
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult Delete([FromRoute] long id)
+    {
+        var isDeleted = _eventService.Delete(id);
+
+        if (isDeleted) return NoContent();
+        else return NotFound();
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult Update([FromBody] UpdateEventDto dto, [FromRoute]long id)
+    {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var isUpdated = _eventService.Update(id, dto);
+
+        if(!isUpdated) return NotFound();
+        return Ok();
+    }
 }

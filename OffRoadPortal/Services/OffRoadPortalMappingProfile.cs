@@ -9,6 +9,7 @@
 using AutoMapper;
 using OffRoadPortal.Dtos;
 using OffRoadPortal.Entities;
+using OffRoadPortal.Models;
 
 namespace OffRoadPortal.Services;
 
@@ -31,5 +32,9 @@ public class OffRoadPortalMappingProfile : Profile
         CreateMap<Car, CarDto>();
 
         CreateMap<Image, ImageDto>();
+
+        CreateMap<CreateEventDto, Event>();
+
+        CreateMap<UpdateEventDto, Event>();
     }
 }

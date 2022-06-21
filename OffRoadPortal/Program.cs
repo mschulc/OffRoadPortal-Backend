@@ -6,6 +6,7 @@
 // File: Program.cs                                        //
 /////////////////////////////////////////////////////////////
 
+using OffRoadPortal.Interfaces;
 using OffRoadPortal.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,8 @@ builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OffRoadPortalDbContext>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IEventService, EventService>();
 
 var app = builder.Build();
 
