@@ -6,9 +6,10 @@
 // File: AdvertisementController.cs                        //
 /////////////////////////////////////////////////////////////
 
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using OffRoadPortal.Services;
+using OffRoadPortal.Dtos;
+using OffRoadPortal.Interfaces;
+using OffRoadPortal.Models;
 
 namespace OffRoadPortal.Controllers;
 
@@ -16,12 +17,60 @@ namespace OffRoadPortal.Controllers;
 [Route("/advert")]
 public class AdvertisementController : ControllerBase
 {
-    private readonly OffRoadPortalDbContext _dbContext;
-    private readonly IMapper _mapper;
+    private readonly IAdvertisementService _advertService;
 
-    public AdvertisementController(OffRoadPortalDbContext dbContext, IMapper mapper)
+    public AdvertisementController(IAdvertisementService advertService)
     {
-        _dbContext = dbContext;
-        _mapper = mapper;
+        _advertService = advertService;
+    }
+
+    [HttpGet]
+    public ActionResult<IEnumerable<AdvertisementDto>> GetAll()
+    {
+        var adverts = _advertService.GetAll();
+        return Ok(adverts);
+    }
+
+    [HttpGet("{id})")]
+    public ActionResult<AdvertisementDto> GetById([FromRoute] long id)
+    {
+        var advert = _advertService.GetById(id);
+        if (advert == null) return NotFound();
+        return Ok(advert);
+    }
+
+    [HttpPost]
+    public ActionResult CreateEvent([FromBody] CreateAdvertisementDto dto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var createdAdvertId = _advertService.Create(dto);
+
+        return Created($"/advert/{createdAdvertId}", null);
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult Delete([FromRoute] long id)
+    {
+        var isDeleted = _advertService.Delete(id);
+
+        if (isDeleted) return NoContent();
+        else return NotFound();
+    }
+
+    [HttpPut("{id}")]
+    public ActionResult Update([FromBody] UpdateAdvertisementDto dto, [FromRoute] long id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var isUpdated = _advertService.Update(id, dto);
+
+        if (!isUpdated) return NotFound();
+        return Ok();
     }
 }

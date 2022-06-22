@@ -21,6 +21,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OffRoadPortalDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IAdvertisementService, AdvertisementService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 
 var app = builder.Build();
 
