@@ -29,16 +29,28 @@ public class OffRoadPortalMappingProfile : Profile
 
         CreateMap<Event, EventDto>();
 
-        CreateMap<ArticleComment, ArticleCommentDto>();
-
-        CreateMap<EventComment, EventCommentDto>();
-
-        CreateMap<Car, CarDto>();
-
-        CreateMap<Image, ImageDto>();
-
         CreateMap<CreateEventDto, Event>();
 
         CreateMap<UpdateEventDto, Event>();
+
+        CreateMap<ArticleComment, ArticleCommentDto>();
+
+        CreateMap<CreateArticleCommentDto, ArticleComment>();
+
+        CreateMap<UpdateArticleCommentDto, ArticleComment>();
+
+        CreateMap<EventComment, EventCommentDto>();
+
+        CreateMap<CreateEventCommentDto, EventComment>();
+
+        CreateMap<UpdateEventCommentDto, EventComment>();
+
+        CreateMap<Car, CarDto>();
+
+        CreateMap<CreateCarDto, Car>();
+
+        CreateMap<UpdateCarDto, Car>();
+
+        CreateMap<Image, ImageDto>();
     }
 }

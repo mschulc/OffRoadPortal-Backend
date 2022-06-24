@@ -3,7 +3,7 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: IEventService.cs                                  //
+// File: ICarService.cs                                    //
 /////////////////////////////////////////////////////////////
 
 using OffRoadPortal.Dtos;
@@ -11,11 +11,11 @@ using OffRoadPortal.Models;
 
 namespace OffRoadPortal.Interfaces;
 
-public interface IEventService
+public interface ICarService
 {
-    long Create(CreateEventDto dto);
-    IEnumerable<EventDto> GetAll();
-    EventDto GetById(long id);
-    public bool Delete(long id);
-    public bool Update(long id, UpdateEventDto dto);
+    long Create(CreateCarDto dto);
+    bool Delete(long id);
+    IEnumerable<CarDto> GetAll();
+    CarDto GetById(long id);
+    bool Update(long id, UpdateCarDto dto);
 }

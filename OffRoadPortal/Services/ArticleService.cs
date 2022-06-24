@@ -37,7 +37,7 @@ namespace OffRoadPortal.Services
 
         public IEnumerable<ArticleDto> GetAll()
         {
-            var articles = _dbContext.Advertisements.ToList();
+            var articles = _dbContext.Articles.ToList();
 
             var result = _mapper.Map<List<ArticleDto>>(articles);
 

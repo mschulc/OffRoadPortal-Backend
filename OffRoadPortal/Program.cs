@@ -23,6 +23,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IAdvertisementService, AdvertisementService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IArticleCommentService, ArticleCommentService>();
+builder.Services.AddScoped<IEventCommentService, EventCommentService>();
+builder.Services.AddScoped<ICarService, CarService>();
 
 var app = builder.Build();
 

@@ -9,14 +9,13 @@
 using OffRoadPortal.Dtos;
 using OffRoadPortal.Models;
 
-namespace OffRoadPortal.Interfaces
+namespace OffRoadPortal.Interfaces;
+
+public interface IAdvertisementService
 {
-    public interface IAdvertisementService
-    {
-        long Create(CreateAdvertisementDto dto);
-        bool Delete(long id);
-        IEnumerable<AdvertisementDto> GetAll();
-        AdvertisementDto GetById(long id);
-        bool Update(long id, UpdateAdvertisementDto dto);
-    }
+    long Create(CreateAdvertisementDto dto);
+    bool Delete(long id);
+    IEnumerable<AdvertisementDto> GetAll();
+    AdvertisementDto GetById(long id);
+    bool Update(long id, UpdateAdvertisementDto dto);
 }

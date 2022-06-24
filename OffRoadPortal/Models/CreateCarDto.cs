@@ -3,16 +3,16 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: Car.cs                                            //
+// File: CreateCarDto.cs                                   //
 /////////////////////////////////////////////////////////////
+
 
 using OffRoadPortal.Enums;
 
-namespace OffRoadPortal.Entities;
+namespace OffRoadPortal.Models;
 
-public class Car
+public class CreateCarDto
 {
-    public long Id { get; set; }
     public string? Name { get; set; }
     public string? Mark { get; set; }
     public string? Model { get; set; }

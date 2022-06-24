@@ -3,19 +3,15 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: IEventService.cs                                  //
+// File: UpdateEventCommentDto.cs                          //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Dtos;
-using OffRoadPortal.Models;
+namespace OffRoadPortal.Models;
 
-namespace OffRoadPortal.Interfaces;
-
-public interface IEventService
+public class UpdateEventCommentDto
 {
-    long Create(CreateEventDto dto);
-    IEnumerable<EventDto> GetAll();
-    EventDto GetById(long id);
-    public bool Delete(long id);
-    public bool Update(long id, UpdateEventDto dto);
+    public long EventId { get; set; }
+    public long? UserId { get; set; }
+    public string? Content { get; set; }
+    public DateTime? ModifiedDate { get; set; }
 }
