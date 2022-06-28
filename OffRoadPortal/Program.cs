@@ -8,13 +8,21 @@
 
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Services;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+//NLog: Setup
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
+
+//Cors policy
 builder.Services.AddControllers();
 builder.Services.AddCors();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,7 +35,9 @@ builder.Services.AddScoped<IArticleCommentService, ArticleCommentService>();
 builder.Services.AddScoped<IEventCommentService, EventCommentService>();
 builder.Services.AddScoped<ICarService, CarService>();
 
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

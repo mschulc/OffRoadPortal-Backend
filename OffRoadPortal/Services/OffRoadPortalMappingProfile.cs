@@ -25,9 +25,9 @@ public class OffRoadPortalMappingProfile : Profile
 
         CreateMap<UpdateAdvertisementDto, Event>();
 
-        CreateMap<Article, ArticleDto>(); 
+        CreateMap<Article, ArticleDto>();
 
-        CreateMap<Event, EventDto>();
+        CreateMap<Event, EventDto>();   
 
         CreateMap<CreateEventDto, Event>();
 

@@ -15,7 +15,8 @@ public class Event
     public long Id { get; set; }
     public long EventOrganizerId { get; set; }
     public string? EventName { get; set; }
-    public string? EventOrganizer { get; set; }
+    public virtual User? EventOrganizer { get; set; }
+    public string? EventOrganizerName { get; set; }
     public DateTime? CreatedDate { get; set; }
     public DateTime? StartEventDate { get; set; }
     public DateTime? EndEventDate { get; set; }
