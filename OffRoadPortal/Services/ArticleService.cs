@@ -69,7 +69,7 @@ namespace OffRoadPortal.Services
 
             if (article is null) return false;
 
-            var result = _mapper.Map<Article>(dto);
+            _mapper.Map<Article>(dto);
             _dbContext.SaveChanges();
             return true;
         }

@@ -69,7 +69,7 @@ public class EventCommentService : IEventCommentService
 
         if (eventComment is null) return false;
 
-        var result = _mapper.Map<EventComment>(dto);
+        _mapper.Map<EventComment>(dto);
         _dbContext.SaveChanges();
         return true;
     }

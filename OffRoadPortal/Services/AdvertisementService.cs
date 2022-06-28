@@ -69,7 +69,7 @@ public class AdvertisementService : IAdvertisementService
 
         if (advert is null) return false;
 
-        var result = _mapper.Map<Advertisement>(dto);
+        _mapper.Map<Advertisement>(dto);
         _dbContext.SaveChanges();
         return true;
     }

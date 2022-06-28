@@ -69,7 +69,7 @@ public class EventService : IEventService
 
         if (_event is null) return false;
 
-        var result = _mapper.Map<Event>(dto);
+        _mapper.Map<Event>(dto);
         _dbContext.SaveChanges();
         return true;
     }

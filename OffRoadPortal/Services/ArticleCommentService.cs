@@ -68,7 +68,7 @@ public class ArticleCommentService : IArticleCommentService
 
         if (articleComment is null) return false;
 
-        var result = _mapper.Map<ArticleComment>(dto);
+        _mapper.Map<ArticleComment>(dto);
         _dbContext.SaveChanges();
         return true;
     }

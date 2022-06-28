@@ -69,7 +69,7 @@ public class CarService : ICarService
 
         if (car is null) return false;
 
-        var result = _mapper.Map<Car>(dto);
+        _mapper.Map<Car>(dto);
         _dbContext.SaveChanges();
         return true;
     }
