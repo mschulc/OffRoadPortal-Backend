@@ -18,11 +18,13 @@ public class EventService : IEventService
 {
     private readonly OffRoadPortalDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly ILogger<EventService> _logger;
 
-    public EventService(OffRoadPortalDbContext dbContext, IMapper mapper)
+    public EventService(OffRoadPortalDbContext dbContext, IMapper mapper, ILogger<EventService> logger)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public EventDto GetById(long id)
@@ -54,6 +56,7 @@ public class EventService : IEventService
 
     public bool Delete(long id)
     {
+        _logger.LogError($"Event with id: {id} DELETE action invoked");
         var _event = _dbContext.Events.FirstOrDefault(e => e.Id == id);
 
         if(_event is null) return false;

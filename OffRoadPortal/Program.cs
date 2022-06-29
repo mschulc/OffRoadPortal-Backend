@@ -9,6 +9,7 @@
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Services;
 using NLog.Web;
+using OffRoadPortal.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IArticleCommentService, ArticleCommentService>();
 builder.Services.AddScoped<IEventCommentService, EventCommentService>();
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 
 var app = builder.Build();
@@ -45,6 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
