@@ -47,7 +47,7 @@ namespace OffRoadPortal.Services
             modelBuilder.Entity<ArticleComment>()
                 .Property(ac => ac.Content).HasMaxLength(255).IsRequired();
             modelBuilder.Entity<ArticleComment>()
-               .Property(ac => ac.Author).IsRequired();
+                .Property(ac => ac.Author).IsRequired();
 
             //Car Entity
             modelBuilder.Entity<Car>()

@@ -22,26 +22,21 @@ public class OffRoadPortalMappingProfile : Profile
         //Article Mapping
         CreateMap<Article, ArticleDto>();
         CreateMap<CreateArticleDto, Article>();
-        CreateMap<Article, CreateArticleDto>();
 
         //Article Comments Mapping
         CreateMap<ArticleComment, ArticleCommentDto>();
         CreateMap<CreateArticleCommentDto, ArticleComment>();
-        CreateMap<UpdateArticleCommentDto, ArticleComment>();
 
         //Event Mapping
         CreateMap<Event, EventDto>();   
         CreateMap<CreateEventDto, Event>();
-        CreateMap<UpdateEventDto, Event>();
 
         //Event comment Mapping
         CreateMap<EventComment, EventCommentDto>();
         CreateMap<CreateEventCommentDto, EventComment>();
-        CreateMap<UpdateEventCommentDto, EventComment>();
 
         //Car Mapping
         CreateMap<Car, CarDto>();
         CreateMap<CreateCarDto, Car>();
-        CreateMap<UpdateCarDto, Car>();
     }
 }

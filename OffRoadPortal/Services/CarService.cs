@@ -65,9 +65,17 @@ public class CarService : ICarService
     public void Update(long userId, long carId, UpdateCarDto dto)
     {
         GetUserById(userId);
-        GetCarById(carId, userId);
+        var car = GetCarById(carId, userId);
 
-        var car = _mapper.Map<Car>(dto);
+        car.Name = dto.Name;
+        car.Mark = dto.Mark;
+        car.Model = dto.Model;
+        car.Year = dto.Year;
+        car.Engine = dto.Engine;
+        car.Fuel = dto.Fuel;
+        car.Description = car.Description;
+        //car.ImageUrl = dto.ImageUrl;
+
         _dbContext.Cars?.Update(car);
         _dbContext.SaveChanges();
     }

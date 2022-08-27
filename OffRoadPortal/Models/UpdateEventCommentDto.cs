@@ -10,7 +10,5 @@ namespace OffRoadPortal.Models;
 
 public class UpdateEventCommentDto
 {
-    public long EventId { get; set; }
-    public long? UserId { get; set; }
     public string? Content { get; set; }
 }

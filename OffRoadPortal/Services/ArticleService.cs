@@ -62,9 +62,12 @@ public class ArticleService : IArticleService
 
     public void Update(long id, UpdateArticleDto dto)
     {
-        GetArticleById(id);
+        var article = GetArticleById(id);
 
-        var article = _mapper.Map<Article>(dto);
+        article.Title = dto.Title;
+        article.Content = dto.Content;
+        article.ImageUrl = dto.ImageUrl;
+
         _dbContext.Articles?.Update(article);
         _dbContext.SaveChanges();
     }

@@ -63,9 +63,10 @@ public class ArticleCommentService : IArticleCommentService
     public void Update(long articleId, long id, UpdateArticleCommentDto dto)
     {
         GetArticleById(articleId);
-        GetArticleCommentById(id, articleId);
+        var articleComment = GetArticleCommentById(id, articleId);
 
-        var articleComment = _mapper.Map<ArticleComment>(dto);
+        articleComment.Content = dto.Content;
+
         _dbContext.ArticleComments?.Update(articleComment);
         _dbContext.SaveChanges();
     }

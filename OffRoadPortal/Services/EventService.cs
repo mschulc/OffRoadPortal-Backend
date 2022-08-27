@@ -62,8 +62,15 @@ public class EventService : IEventService
 
     public void Update(long id, UpdateEventDto dto)
     {
-        GetEventById(id);
-        var _event = _mapper.Map<Event>(dto);
+        var _event = GetEventById(id);
+
+        _event.EventName = dto.EventName;
+        _event.EventDescription = dto.EventDescription;
+        _event.StartEventDate = dto.StartEventDate;
+        _event.EndEventDate = dto.EndEventDate;
+        _event.Category = dto.Category;
+        _event.Type = dto.Type;
+
         _dbContext.Events?.Update(_event);
         _dbContext.SaveChanges();
     }
