@@ -16,12 +16,15 @@ public class User
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Email { get; set; }
-    public int PhoneNumber { get; set; }
-    public int Age { get; set; }
-    public UserRole Role { get; set; }
+    public int? PhoneNumber { get; set; }
+    public string PasswordHash { get; set; }
+    public DateTime? BirthDate { get; set; }
     public string? Description { get; set; }
     public string? City { get; set; }
     public string? ProfileImageUrl { get; set; }
+
+    public int RoleId { get; set; }
+    public virtual Role Role { get; set; }
     public virtual List<Car>? Cars { get; set; }
     public virtual List<Event>? Events { get; set; }
 }

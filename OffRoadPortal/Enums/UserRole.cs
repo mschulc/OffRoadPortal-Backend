@@ -13,6 +13,5 @@ public enum UserRole
     Standard = 1,
     Premium = 2,
     Redactor = 3,
-    Admin = 4,
-    SuperAdmin = 5
+    Admin = 4
 }

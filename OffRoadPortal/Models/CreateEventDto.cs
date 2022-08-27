@@ -15,14 +15,23 @@ public class CreateEventDto
 {
     [Required]
     public long EventOrganizerId { get; set; }
+
     [Required]
     [MaxLength(50)]
     public string? EventName { get; set; }
-    public string? EventOrganizer { get; set; }
-    public DateTime? CreatedDate { get; set; }
+
+    [Required]
     public DateTime? StartEventDate { get; set; }
+
+    [Required]
     public DateTime? EndEventDate { get; set; }
+
+    [Required]
     public string? EventDescription { get; set; }
+
+    [Required]
     public EventCategory Category { get; set; }
+
+    [Required]
     public VehicleType Type { get; set; }
 }

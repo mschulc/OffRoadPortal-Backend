@@ -14,5 +14,6 @@ public class EventComment
     public long EventId { get; set; }
     public long? UserId { get; set; }
     public string? Content { get; set; }
+    public string? Author { get; set; }
     public DateTime CreatedDate { get; set; }
 }

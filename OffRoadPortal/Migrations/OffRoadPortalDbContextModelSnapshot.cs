@@ -46,22 +46,27 @@ namespace OffRoadPortal.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("AuthorId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -80,10 +85,13 @@ namespace OffRoadPortal.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -116,18 +124,23 @@ namespace OffRoadPortal.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Mark")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.Property<short?>("Year")
+                        .IsRequired()
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
@@ -152,14 +165,17 @@ namespace OffRoadPortal.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EndEventDate")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EventDescription")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EventName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<long>("EventOrganizerId")
                         .HasColumnType("bigint");
@@ -168,6 +184,7 @@ namespace OffRoadPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartEventDate")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Type")
@@ -186,8 +203,14 @@ namespace OffRoadPortal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<string>("Content")
+                    b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -205,6 +228,23 @@ namespace OffRoadPortal.Migrations
                     b.ToTable("EventComments");
                 });
 
+            modelBuilder.Entity("OffRoadPortal.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("OffRoadPortal.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -213,8 +253,8 @@ namespace OffRoadPortal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -223,6 +263,7 @@ namespace OffRoadPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -231,16 +272,22 @@ namespace OffRoadPortal.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PhoneNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -271,24 +318,31 @@ namespace OffRoadPortal.Migrations
 
             modelBuilder.Entity("OffRoadPortal.Entities.Car", b =>
                 {
-                    b.HasOne("OffRoadPortal.Entities.User", "User")
+                    b.HasOne("OffRoadPortal.Entities.User", null)
                         .WithMany("Cars")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.EventComment", b =>
                 {
-                    b.HasOne("OffRoadPortal.Entities.Event", "Event")
+                    b.HasOne("OffRoadPortal.Entities.Event", null)
                         .WithMany("EventComments")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.Navigation("Event");
+            modelBuilder.Entity("OffRoadPortal.Entities.User", b =>
+                {
+                    b.HasOne("OffRoadPortal.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.Article", b =>

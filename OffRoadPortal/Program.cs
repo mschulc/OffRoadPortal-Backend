@@ -10,6 +10,7 @@ using OffRoadPortal.Interfaces;
 using OffRoadPortal.Services;
 using NLog.Web;
 using OffRoadPortal.Middleware;
+using OffRoadPortal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OffRoadPortalDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<RoleSeeder>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IArticleCommentService, ArticleCommentService>();
@@ -38,6 +40,9 @@ builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<RoleSeeder>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -53,6 +58,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(@"http://localhost:4200"));
+
+seeder.Seed();
 
 app.UseAuthorization();
 

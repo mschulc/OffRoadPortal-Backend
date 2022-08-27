@@ -6,14 +6,18 @@
 // File: CreateEventCommentDto.cs                          //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace OffRoadPortal.Models;
 
 public class CreateEventCommentDto
 {
-    public long EventId { get; set; }
+    [Required]
+    public string? Author { get; set; }
     public long? UserId { get; set; }
+
+    [Required]
+    [MaxLength(255)]
     public string? Content { get; set; }
     public DateTime CreatedDate { get; set; }
 }
