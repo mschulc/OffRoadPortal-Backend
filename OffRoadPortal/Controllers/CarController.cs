@@ -14,7 +14,7 @@ using OffRoadPortal.Models;
 namespace OffRoadPortal.Controllers;
 
 [ApiController]
-[Route("/user/car")]
+[Route("/user/{userId}/car")]
 public class CarController : ControllerBase
 {
     private readonly ICarService _carService;
@@ -25,52 +25,45 @@ public class CarController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<CarDto>> GetAll()
+    public ActionResult<List<CarDto>> GetAll(long userId)
     {
-        var cars = _carService.GetAll();
+        var cars = _carService.GetAll(userId);
         return Ok(cars);
     }
 
-    [HttpGet("{id})")]
-    public ActionResult<CarDto> GetById([FromRoute] long id)
+    [HttpGet("{carId})")]
+    public ActionResult<CarDto> GetById([FromRoute] long userId, [FromRoute] long carId)
     {
-        var car = _carService.GetById(id);
-        if (car == null) return NotFound();
+        var car = _carService.GetById(userId, carId);
         return Ok(car);
     }
 
     [HttpPost]
-    public ActionResult CreateEvent([FromBody] CreateCarDto dto)
+    public ActionResult CreateCar([FromRoute] long userId ,[FromBody] CreateCarDto dto)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        var createdCarId = _carService.Create(dto);
-
-        return Created($"/user/car/{createdCarId}", null);
+        var createdCarId = _carService.Create(userId, dto);
+        return Created($"/user/{userId}/car/{createdCarId}", null);
     }
 
-    [HttpDelete("{id}")]
-    public ActionResult Delete([FromRoute] long id)
+    [HttpDelete("{carId}")]
+    public ActionResult Delete([FromRoute] long userId, [FromRoute] long carId)
     {
-        var isDeleted = _carService.Delete(id);
-
-        if (isDeleted) return NoContent();
-        else return NotFound();
+        _carService.Delete(userId, carId);
+        return NoContent();
     }
 
     [HttpPut("{id}")]
-    public ActionResult Update([FromBody] UpdateCarDto dto, [FromRoute] long id)
+    public ActionResult Update([FromRoute]long userId, [FromBody] UpdateCarDto dto, [FromRoute] long id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-
-        var isUpdated = _carService.Update(id, dto);
-
-        if (!isUpdated) return NotFound();
+        _carService.Update(userId, id, dto);
         return Ok();
     }
 }

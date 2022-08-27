@@ -31,11 +31,10 @@ public class EventController : ControllerBase
         return Ok(events);
     }
 
-    [HttpGet("{id})")]
+    [HttpGet("{id}")]
     public ActionResult<EventDto> GetById([FromRoute] long id)
     {
         var _event = _eventService.GetById(id);
-        if(_event == null ) return NotFound();
         return Ok(_event);
     }
 
@@ -46,18 +45,16 @@ public class EventController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        var createdEventId = _eventService.Create(dto);
 
+        var createdEventId = _eventService.Create(dto);
         return Created($"/event/{createdEventId}", null);
     }
 
     [HttpDelete("{id}")]
     public ActionResult Delete([FromRoute] long id)
     {
-        var isDeleted = _eventService.Delete(id);
-
-        if (isDeleted) return NoContent();
-        else return NotFound();
+         _eventService.Delete(id);
+         return NoContent();
     }
 
     [HttpPut("{id}")]
@@ -67,10 +64,7 @@ public class EventController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-
-        var isUpdated = _eventService.Update(id, dto);
-
-        if(!isUpdated) return NotFound();
+         _eventService.Update(id, dto);
         return Ok();
     }
 }

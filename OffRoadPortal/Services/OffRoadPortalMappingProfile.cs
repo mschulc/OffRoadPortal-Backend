@@ -17,40 +17,32 @@ public class OffRoadPortalMappingProfile : Profile
 {
     public OffRoadPortalMappingProfile()
     {
+        //User Mapping
         CreateMap<User, UserDto>();
-        
-        CreateMap<Advertisement, AdvertisementDto>();
 
-        CreateMap<CreateAdvertisementDto, Event>();
-
-        CreateMap<UpdateAdvertisementDto, Event>();
-
+        //Article Mapping
         CreateMap<Article, ArticleDto>();
+        CreateMap<CreateArticleDto, Article>();
+        CreateMap<Article, CreateArticleDto>();
 
-        CreateMap<Event, EventDto>();   
-
-        CreateMap<CreateEventDto, Event>();
-
-        CreateMap<UpdateEventDto, Event>();
-
+        //Article Comments Mapping
         CreateMap<ArticleComment, ArticleCommentDto>();
-
         CreateMap<CreateArticleCommentDto, ArticleComment>();
-
         CreateMap<UpdateArticleCommentDto, ArticleComment>();
 
+        //Event Mapping
+        CreateMap<Event, EventDto>();   
+        CreateMap<CreateEventDto, Event>();
+        CreateMap<UpdateEventDto, Event>();
+
+        //Event comment Mapping
         CreateMap<EventComment, EventCommentDto>();
-
         CreateMap<CreateEventCommentDto, EventComment>();
-
         CreateMap<UpdateEventCommentDto, EventComment>();
 
+        //Car Mapping
         CreateMap<Car, CarDto>();
-
         CreateMap<CreateCarDto, Car>();
-
         CreateMap<UpdateCarDto, Car>();
-
-        CreateMap<Image, ImageDto>();
     }
 }

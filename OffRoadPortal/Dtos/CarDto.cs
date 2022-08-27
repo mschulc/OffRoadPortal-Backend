@@ -12,7 +12,6 @@ namespace OffRoadPortal.Dtos;
 
 public class CarDto
 {
-    public long? Id { get; set; }
     public string? Name { get; set; }
     public string? Mark { get; set; }
     public string? Model { get; set; }
@@ -20,4 +19,5 @@ public class CarDto
     public short? Engine { get; set; }
     public FuelType Fuel { get; set; }
     public string? Description { get; set; }
+    public long UserId { get; set; }
 }

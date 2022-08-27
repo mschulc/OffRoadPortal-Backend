@@ -14,7 +14,7 @@ using OffRoadPortal.Models;
 namespace OffRoadPortal.Controllers;
 
 [ApiController]
-[Route("/article/comment")]
+[Route("/article/{articleId}/comment")]
 public class ArticleCommentController : ControllerBase
 {
     private readonly IArticleCommentService _articleCommentService;
@@ -25,52 +25,45 @@ public class ArticleCommentController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ArticleCommentDto>> GetAll()
+    public ActionResult<List<ArticleCommentDto>> GetAll(long articleId)
     {
-        var articleComments = _articleCommentService.GetAll();
+        var articleComments = _articleCommentService.GetAll(articleId);
         return Ok(articleComments);
     }
 
-    [HttpGet("{id})")]
-    public ActionResult<ArticleCommentDto> GetById([FromRoute] long id)
+    [HttpGet("{id}")]
+    public ActionResult<ArticleCommentDto> GetById([FromRoute] long articleId, [FromRoute] long id)
     {
-        var articleComment = _articleCommentService.GetById(id);
-        if (articleComment == null) return NotFound();
+        var articleComment = _articleCommentService.GetById(articleId ,id);
         return Ok(articleComment);
     }
 
     [HttpPost]
-    public ActionResult CreateEvent([FromBody] CreateArticleCommentDto dto)
+    public ActionResult CreateEvent([FromRoute] long articleId, [FromBody] CreateArticleCommentDto dto)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        var createdArticleCommentId = _articleCommentService.Create(dto);
-
-        return Created($"/article/comment/{createdArticleCommentId}", null);
+        var createdArticleCommentId = _articleCommentService.Create(articleId, dto);
+        return Created($"/article/{articleId}/comment/{createdArticleCommentId}", null);
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete([FromRoute] long id)
+    public ActionResult Delete([FromRoute] long articleId, [FromRoute] long id)
     {
-        var isDeleted = _articleCommentService.Delete(id);
-
-        if (isDeleted) return NoContent();
-        else return NotFound();
+        _articleCommentService.Delete(articleId, id);
+        return NoContent();
     }
 
     [HttpPut("{id}")]
-    public ActionResult Update([FromBody] UpdateArticleCommentDto dto, [FromRoute] long id)
+    public ActionResult Update([FromRoute] long articleId, [FromBody] UpdateArticleCommentDto dto, [FromRoute] long id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-
-        var isUpdated = _articleCommentService.Update(id, dto);
-
-        if (!isUpdated) return NotFound();
+        _articleCommentService.Update(articleId, id, dto);
         return Ok();
     }
 }

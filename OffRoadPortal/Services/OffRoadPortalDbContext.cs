@@ -17,12 +17,10 @@ namespace OffRoadPortal.Services
 
         public DbSet<Event>? Events { get; set; }
         public DbSet<Article>? Articles { get; set; }
-        public DbSet<Advertisement>? Advertisements { get; set; }
         public DbSet<ArticleComment>? ArticleComments { get; set; }
         public DbSet<EventComment>? EventComments { get; set; }
         public DbSet<User>? Users { get; set; }
         public DbSet<Car>? Cars { get; set; }
-        public DbSet<Image>? Images { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

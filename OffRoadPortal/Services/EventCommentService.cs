@@ -7,8 +7,10 @@
 /////////////////////////////////////////////////////////////
 
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OffRoadPortal.Dtos;
 using OffRoadPortal.Entities;
+using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
 
@@ -25,52 +27,62 @@ public class EventCommentService : IEventCommentService
         _mapper = mapper;
     }
 
-    public EventCommentDto GetById(long id)
+    public EventCommentDto GetById(long eventId, long id)
     {
-        var eventComment = _dbContext.EventComments.FirstOrDefault(ec => ec.Id == id);
-
-        if (eventComment is null) return null;
+        GetEventById(eventId);
+        var eventComment = GetEventCommentById(id, eventId);
 
         var result = _mapper.Map<EventCommentDto>(eventComment);
         return result;
     }
 
-    public IEnumerable<EventCommentDto> GetAll()
+    public List<EventCommentDto> GetAll(long eventId)
     {
-        var eventComments = _dbContext.EventComments.ToList();
-
-        var result = _mapper.Map<List<EventCommentDto>>(eventComments);
-
+        var _event = GetEventById(eventId);
+        var result = _mapper.Map<List<EventCommentDto>>(_event.EventComments);
         return result;
     }
 
-    public long Create(CreateEventCommentDto dto)
+    public long Create(long eventId, CreateEventCommentDto dto)
     {
+        GetEventById(eventId);
         var eventComment = _mapper.Map<EventComment>(dto);
-        _dbContext.EventComments.Add(eventComment);
+        _dbContext.EventComments?.Add(eventComment);
         _dbContext.SaveChanges();
         return eventComment.Id;
     }
 
-    public bool Delete(long id)
+    public void Delete(long eventId, long id)
     {
-        var eventComment = _dbContext.EventComments.FirstOrDefault(ec => ec.Id == id);
+        GetEventById(eventId);
+        var eventComment = GetEventCommentById(id, eventId);
 
-        if (eventComment is null) return false;
-
-        _dbContext.EventComments.Remove(eventComment);
+        _dbContext.EventComments?.Remove(eventComment);
         _dbContext.SaveChanges();
-        return true;
     }
 
-    public bool Update(long id, UpdateEventCommentDto dto)
+    public void Update(long eventId, long id, UpdateEventCommentDto dto)
     {
-        var eventComment = _dbContext.EventComments.FirstOrDefault(ec => ec.Id == id);
-
-        if (eventComment is null) return false;
+        GetEventById(eventId);
+        GetEventCommentById(id, eventId);
 
         _mapper.Map<EventComment>(dto);
         _dbContext.SaveChanges();
-        return true;
+    }
+
+    private Event GetEventById(long eventId)
+    {
+        var _event = _dbContext.Events.Include(e => e.EventComments).FirstOrDefault(e => e.Id == eventId);
+        if (_event is null)
+            throw new NotFoundException("Event not found");
+        return _event;
+    }
+
+    private EventComment GetEventCommentById(long id, long eventId)
+    {
+        var eventComment = _dbContext.EventComments.FirstOrDefault(ec => ec.Id == id);
+        if (eventComment is null || eventComment.EventId != eventId)
+            throw new NotFoundException("Event Comment not found");
+        return eventComment;
     }
 }

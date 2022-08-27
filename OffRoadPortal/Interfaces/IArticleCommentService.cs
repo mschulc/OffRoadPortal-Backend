@@ -13,9 +13,9 @@ namespace OffRoadPortal.Interfaces;
 
 public interface IArticleCommentService
 {
-    long Create(CreateArticleCommentDto dto);
-    bool Delete(long id);
-    IEnumerable<ArticleCommentDto> GetAll();
-    ArticleCommentDto GetById(long id);
-    bool Update(long id, UpdateArticleCommentDto dto);
+    long Create(long articleId, CreateArticleCommentDto dto);
+    void Delete(long articleId, long id);
+    List<ArticleCommentDto> GetAll(long articleId);
+    ArticleCommentDto GetById(long articleId, long id);
+    void Update(long articleId, long id, UpdateArticleCommentDto dto);
 }

@@ -6,8 +6,6 @@
 // File: ArticleCommentDto.cs                              //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Entities;
-
 namespace OffRoadPortal.Dtos;
 
 public class ArticleCommentDto
@@ -17,6 +15,4 @@ public class ArticleCommentDto
     public long? UserId { get; set; }
     public string? Content { get; set; }
     public DateTime CreatedDate { get; set; }
-    public DateTime? ModifiedDate { get; set; }
-    public virtual User? User { get; set; }
 }

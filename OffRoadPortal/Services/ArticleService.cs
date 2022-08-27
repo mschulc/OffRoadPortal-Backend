@@ -7,71 +7,72 @@
 /////////////////////////////////////////////////////////////
 
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OffRoadPortal.Dtos;
 using OffRoadPortal.Entities;
+using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
 
-namespace OffRoadPortal.Services
+namespace OffRoadPortal.Services;
+
+public class ArticleService : IArticleService
 {
-    public class ArticleService : IArticleService
+    private readonly OffRoadPortalDbContext _dbContext;
+    private readonly IMapper _mapper;
+    private readonly ILogger<ArticleService> _logger;
+
+    public ArticleService(OffRoadPortalDbContext dbContext, IMapper mapper, ILogger<ArticleService> logger)
     {
-        private readonly OffRoadPortalDbContext _dbContext;
-        private readonly IMapper _mapper;
+        _dbContext = dbContext;
+        _mapper = mapper;
+        _logger = logger;
+    }
 
-        public ArticleService(OffRoadPortalDbContext dbContext, IMapper mapper)
-        {
-            _dbContext = dbContext;
-            _mapper = mapper;
-        }
+    public ArticleDto GetById(long id)
+    {
+        var article = GetArticleById(id);
+        return _mapper.Map<ArticleDto>(article);
+    }
 
-        public ArticleDto GetById(long id)
-        {
-            var article = _dbContext.Articles.FirstOrDefault(a => a.Id == id);
+    public IEnumerable<ArticleDto> GetAll()
+    {
+        var articles = _dbContext.Articles.Include(a => a.ArticleComments).ToList();
+        if (articles is null)
+            throw new NotFoundException("Articles not found");
 
-            if (article is null) return null;
+        var result = _mapper.Map<List<ArticleDto>>(articles);
+        return result;
+    }
 
-            var result = _mapper.Map<ArticleDto>(article);
-            return result;
-        }
+    public long Create(CreateArticleDto dto)
+    {
+        var article = _mapper.Map<Article>(dto);
+        _dbContext.Articles?.Add(article);
+        _dbContext.SaveChanges();
+        return article.Id;
+    }
 
-        public IEnumerable<ArticleDto> GetAll()
-        {
-            var articles = _dbContext.Articles.ToList();
+    public void Delete(long id)
+    {
+        var article = GetArticleById(id);
+        _dbContext.Articles?.Remove(article);
+        _dbContext.SaveChanges();
+    }
 
-            var result = _mapper.Map<List<ArticleDto>>(articles);
+    public void Update(long id, UpdateArticleDto dto)
+    {
+        GetArticleById(id);
 
-            return result;
-        }
+        _mapper.Map<Article>(dto);
+        _dbContext.SaveChanges();
+    }
 
-        public long Create(CreateArticleDto dto)
-        {
-            var article = _mapper.Map<Article>(dto);
-            _dbContext.Articles.Add(article);
-            _dbContext.SaveChanges();
-            return article.Id;
-        }
-
-        public bool Delete(long id)
-        {
-            var article = _dbContext.Articles.FirstOrDefault(a => a.Id == id);
-
-            if (article is null) return false;
-
-            _dbContext.Articles.Remove(article);
-            _dbContext.SaveChanges();
-            return true;
-        }
-
-        public bool Update(long id, UpdateArticleDto dto)
-        {
-            var article = _dbContext.Articles.FirstOrDefault(a => a.Id == id);
-
-            if (article is null) return false;
-
-            _mapper.Map<Article>(dto);
-            _dbContext.SaveChanges();
-            return true;
-        }
+    private Article GetArticleById(long id)
+    {
+        var article = _dbContext.Articles.FirstOrDefault(a => a.Id == id);
+        if (article is null)
+            throw new NotFoundException("Article not found");
+        return article;
     }
 }

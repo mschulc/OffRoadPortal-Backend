@@ -16,6 +16,6 @@ public interface IEventService
     long Create(CreateEventDto dto);
     IEnumerable<EventDto> GetAll();
     EventDto GetById(long id);
-    public bool Delete(long id);
-    public bool Update(long id, UpdateEventDto dto);
+    public void Delete(long id);
+    public void Update(long id, UpdateEventDto dto);
 }

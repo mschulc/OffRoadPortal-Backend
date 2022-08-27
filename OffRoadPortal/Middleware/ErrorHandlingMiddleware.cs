@@ -7,6 +7,7 @@
 /////////////////////////////////////////////////////////////
 
 using Microsoft.AspNetCore.Http;
+using OffRoadPortal.Exceptions;
 
 namespace OffRoadPortal.Middleware;
 
@@ -23,6 +24,11 @@ public class ErrorHandlingMiddleware : IMiddleware
         try
         {
             await next.Invoke(context);
+        }
+        catch(NotFoundException notFoundException)
+        {
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync(notFoundException.Message);
         }
         catch(Exception e)
         {

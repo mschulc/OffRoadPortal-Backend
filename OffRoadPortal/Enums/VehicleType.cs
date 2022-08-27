@@ -13,5 +13,6 @@ public enum VehicleType
     Car,
     Truck,
     Motorcycle,
-    Bicycle
+    Bicycle,
+    All
 }

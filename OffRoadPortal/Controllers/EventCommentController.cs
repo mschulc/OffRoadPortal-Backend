@@ -14,7 +14,7 @@ using OffRoadPortal.Models;
 namespace OffRoadPortal.Controllers;
 
 [ApiController]
-[Route("/event/comment")]
+[Route("/event/{eventId}/comment")]
 public class EventCommentController : ControllerBase
 {
     private readonly IEventCommentService _eventCommentService;
@@ -25,52 +25,45 @@ public class EventCommentController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<EventCommentDto>> GetAll()
+    public ActionResult<List<EventCommentDto>> GetAll(long eventId)
     {
-        var eventComments = _eventCommentService.GetAll();
+        var eventComments = _eventCommentService.GetAll(eventId);
         return Ok(eventComments);
     }
 
-    [HttpGet("{id})")]
-    public ActionResult<EventCommentDto> GetById([FromRoute] long id)
+    [HttpGet("{id}")]
+    public ActionResult<EventCommentDto> GetById([FromRoute] long eventId, [FromRoute] long id)
     {
-        var eventComment = _eventCommentService.GetById(id);
-        if (eventComment == null) return NotFound();
+        var eventComment = _eventCommentService.GetById(eventId, id);
         return Ok(eventComment);
     }
 
     [HttpPost]
-    public ActionResult CreateEvent([FromBody] CreateEventCommentDto dto)
+    public ActionResult CreateEvent([FromRoute] long eventId, [FromBody] CreateEventCommentDto dto)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        var createdEventCommentId = _eventCommentService.Create(dto);
-
-        return Created($"/event/comment/{createdEventCommentId}", null);
+        var createdEventCommentId = _eventCommentService.Create(eventId, dto);
+        return Created($"/event/{eventId}/comment/{createdEventCommentId}", null);
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete([FromRoute] long id)
+    public ActionResult Delete([FromRoute] long eventId, [FromRoute] long id)
     {
-        var isDeleted = _eventCommentService.Delete(id);
-
-        if (isDeleted) return NoContent();
-        else return NotFound();
+        _eventCommentService.Delete(eventId, id);
+        return NoContent();
     }
 
     [HttpPut("{id}")]
-    public ActionResult Update([FromBody] UpdateEventCommentDto dto, [FromRoute] long id)
+    public ActionResult Update([FromRoute] long eventId, [FromBody] UpdateEventCommentDto dto, [FromRoute] long id)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-
-        var isUpdated = _eventCommentService.Update(id, dto);
-
-        if (!isUpdated) return NotFound();
+        _eventCommentService.Update(eventId, id, dto);
         return Ok();
     }
 }

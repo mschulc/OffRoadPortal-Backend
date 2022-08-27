@@ -7,11 +7,14 @@
 /////////////////////////////////////////////////////////////
 
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OffRoadPortal.Dtos;
 using OffRoadPortal.Entities;
+using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
-using OffRoadPortal.Services;
+
+namespace OffRoadPortal.Services;
 
 public class ArticleCommentService : IArticleCommentService
 {
@@ -24,52 +27,61 @@ public class ArticleCommentService : IArticleCommentService
         _mapper = mapper;
     }
 
-    public ArticleCommentDto GetById(long id)
+    public ArticleCommentDto GetById(long articleId, long id)
     {
-        var articleComment = _dbContext.ArticleComments.FirstOrDefault(ac => ac.Id == id);
-
-        if (articleComment is null) return null;
-
+        GetArticleById(articleId);
+        var articleComment = GetArticleCommentById(id, articleId);
         var result = _mapper.Map<ArticleCommentDto>(articleComment);
         return result;
     }
 
-    public IEnumerable<ArticleCommentDto> GetAll()
+    public List<ArticleCommentDto> GetAll(long articleId)
     {
-        var articleComments = _dbContext.ArticleComments.ToList();
-
-        var result = _mapper.Map<List<ArticleCommentDto>>(articleComments);
-
+        var article = GetArticleById(articleId);
+        var result = _mapper.Map<List<ArticleCommentDto>>(article.ArticleComments);
         return result;
     }
 
-    public long Create(CreateArticleCommentDto dto)
+    public long Create(long articleId, CreateArticleCommentDto dto)
     {
+        GetArticleById(articleId);
         var articleComment = _mapper.Map<ArticleComment>(dto);
-        _dbContext.ArticleComments.Add(articleComment);
+        articleComment.ArticleId = articleId;
+        _dbContext.ArticleComments?.Add(articleComment);
         _dbContext.SaveChanges();
         return articleComment.Id;
     }
 
-    public bool Delete(long id)
+    public void Delete(long articleId, long id)
     {
-        var articleComment = _dbContext.ArticleComments.FirstOrDefault(ac => ac.Id == id);
-
-        if (articleComment is null) return false;
-
-        _dbContext.ArticleComments.Remove(articleComment);
+        GetArticleById(articleId);
+        var articleComment = GetArticleCommentById(id, articleId);
+        _dbContext.ArticleComments?.Remove(articleComment);
         _dbContext.SaveChanges();
-        return true;
     }
 
-    public bool Update(long id, UpdateArticleCommentDto dto)
+    public void Update(long articleId, long id, UpdateArticleCommentDto dto)
     {
-        var articleComment = _dbContext.ArticleComments.FirstOrDefault(ac => ac.Id == id);
-
-        if (articleComment is null) return false;
+        GetArticleById(articleId);
+        GetArticleCommentById(id, articleId);
 
         _mapper.Map<ArticleComment>(dto);
         _dbContext.SaveChanges();
-        return true;
+    }
+
+    private Article GetArticleById(long articleId)
+    {
+        var article = _dbContext.Articles.Include(a => a.ArticleComments).FirstOrDefault(a => a.Id == articleId);
+        if (article is null)
+            throw new NotFoundException("Article not found");
+        return article;
+    }
+
+    private ArticleComment GetArticleCommentById(long id, long articleId)
+    {
+        var articleComment = _dbContext.ArticleComments.FirstOrDefault(ac => ac.Id == id);
+        if (articleComment is null || articleComment.ArticleId != articleId)
+            throw new NotFoundException("Article Comment not found");
+        return articleComment;
     }
 }

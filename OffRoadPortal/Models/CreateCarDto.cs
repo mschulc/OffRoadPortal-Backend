@@ -6,7 +6,6 @@
 // File: CreateCarDto.cs                                   //
 /////////////////////////////////////////////////////////////
 
-
 using OffRoadPortal.Enums;
 
 namespace OffRoadPortal.Models;
@@ -20,4 +19,5 @@ public class CreateCarDto
     public short? Engine { get; set; }
     public FuelType Fuel { get; set; }
     public string? Description { get; set; }
+    public long UserId { get; set; }
 }

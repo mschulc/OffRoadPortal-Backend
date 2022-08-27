@@ -14,8 +14,8 @@ namespace OffRoadPortal.Interfaces;
 public interface IArticleService
 {
     long Create(CreateArticleDto dto);
-    bool Delete(long id);
+    void Delete(long id);
     IEnumerable<ArticleDto> GetAll();
     ArticleDto GetById(long id);
-    bool Update(long id, UpdateArticleDto dto);
+    void Update(long id, UpdateArticleDto dto);
 }

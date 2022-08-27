@@ -6,6 +6,8 @@
 // File: CreateArticleDto.cs                               //
 /////////////////////////////////////////////////////////////
 
+using OffRoadPortal.Entities;
+
 namespace OffRoadPortal.Models;
 
 public class CreateArticleDto
@@ -14,4 +16,6 @@ public class CreateArticleDto
     public string? Content { get; set; }
     public long AuthorId { get; set; }
     public string? Author { get; set; }
+    public string? ImageUrl { get; set; }
+    public DateTime CreatedDate { get; set; }
 }

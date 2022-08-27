@@ -12,59 +12,31 @@ using OffRoadPortal.Services;
 namespace OffRoadPortal.Migrations
 {
     [DbContext(typeof(OffRoadPortalDbContext))]
-    [Migration("20220619121908_Init")]
+    [Migration("20220827083505_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("OffRoadPortal.Entities.Announcement", b =>
+            modelBuilder.Entity("EventUser", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<long>("EventsId")
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<int>("Category")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<long>("SellerId")
+                    b.Property<long>("ParticipantsId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("SellerName")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("EventsId", "ParticipantsId");
 
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("ParticipantsId");
 
-                    b.Property<bool>("Visible")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Announcements");
+                    b.ToTable("EventUser");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.Article", b =>
@@ -87,8 +59,8 @@ namespace OffRoadPortal.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -109,13 +81,13 @@ namespace OffRoadPortal.Migrations
                     b.Property<long>("ArticleId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<long?>("UserId")
@@ -125,9 +97,46 @@ namespace OffRoadPortal.Migrations
 
                     b.HasIndex("ArticleId");
 
+                    b.ToTable("ArticleComments");
+                });
+
+            modelBuilder.Entity("OffRoadPortal.Entities.Car", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short?>("Engine")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("Fuel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Mark")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<short?>("Year")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("ArticleComments");
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.Event", b =>
@@ -154,11 +163,11 @@ namespace OffRoadPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EventOrganizer")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<long>("EventOrganizerId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("EventOrganizerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartEventDate")
                         .HasColumnType("datetime2");
@@ -188,9 +197,6 @@ namespace OffRoadPortal.Migrations
                     b.Property<long>("EventId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
@@ -198,35 +204,7 @@ namespace OffRoadPortal.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("EventComments");
-                });
-
-            modelBuilder.Entity("OffRoadPortal.Entities.Image", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long?>("AnnouncementId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnnouncementId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.User", b =>
@@ -240,9 +218,6 @@ namespace OffRoadPortal.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<string>("Car")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -251,9 +226,6 @@ namespace OffRoadPortal.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("EventId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -264,84 +236,76 @@ namespace OffRoadPortal.Migrations
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EventUser", b =>
+                {
+                    b.HasOne("OffRoadPortal.Entities.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OffRoadPortal.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("ParticipantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.ArticleComment", b =>
                 {
                     b.HasOne("OffRoadPortal.Entities.Article", null)
-                        .WithMany("Comments")
+                        .WithMany("ArticleComments")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
+            modelBuilder.Entity("OffRoadPortal.Entities.Car", b =>
+                {
                     b.HasOne("OffRoadPortal.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("Cars")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.EventComment", b =>
                 {
-                    b.HasOne("OffRoadPortal.Entities.Event", null)
-                        .WithMany("Comments")
+                    b.HasOne("OffRoadPortal.Entities.Event", "Event")
+                        .WithMany("EventComments")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OffRoadPortal.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("OffRoadPortal.Entities.Image", b =>
-                {
-                    b.HasOne("OffRoadPortal.Entities.Announcement", null)
-                        .WithMany("Images")
-                        .HasForeignKey("AnnouncementId");
-
-                    b.HasOne("OffRoadPortal.Entities.User", null)
-                        .WithMany("Images")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("OffRoadPortal.Entities.User", b =>
-                {
-                    b.HasOne("OffRoadPortal.Entities.Event", null)
-                        .WithMany("Participants")
-                        .HasForeignKey("EventId");
-                });
-
-            modelBuilder.Entity("OffRoadPortal.Entities.Announcement", b =>
-                {
-                    b.Navigation("Images");
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.Article", b =>
                 {
-                    b.Navigation("Comments");
+                    b.Navigation("ArticleComments");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.Event", b =>
                 {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Participants");
+                    b.Navigation("EventComments");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.User", b =>
                 {
-                    b.Navigation("Images");
+                    b.Navigation("Cars");
                 });
 #pragma warning restore 612, 618
         }

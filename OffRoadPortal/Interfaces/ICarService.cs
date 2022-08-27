@@ -13,9 +13,9 @@ namespace OffRoadPortal.Interfaces;
 
 public interface ICarService
 {
-    long Create(CreateCarDto dto);
-    bool Delete(long id);
-    IEnumerable<CarDto> GetAll();
-    CarDto GetById(long id);
-    bool Update(long id, UpdateCarDto dto);
+    long Create(long userId, CreateCarDto dto);
+    void Delete(long userId, long carId);
+    List<CarDto> GetAll(long userId);
+    CarDto GetById(long userId, long carId);
+    void Update(long userId, long carId, UpdateCarDto dto);
 }

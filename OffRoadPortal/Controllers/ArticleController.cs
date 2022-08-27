@@ -31,33 +31,29 @@ public class ArticleController : ControllerBase
         return Ok(articles);
     }
 
-    [HttpGet("{id})")]
+    [HttpGet("{id}")]
     public ActionResult<ArticleDto> GetById([FromRoute] long id)
     {
         var article = _articleService.GetById(id);
-        if (article == null) return NotFound();
         return Ok(article);
     }
 
     [HttpPost]
-    public ActionResult CreateEvent([FromBody] CreateArticleDto dto)
+    public ActionResult CreateArticle([FromBody] CreateArticleDto dto)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
         var createdArticleId = _articleService.Create(dto);
-
         return Created($"/article/{createdArticleId}", null);
     }
 
     [HttpDelete("{id}")]
     public ActionResult Delete([FromRoute] long id)
     {
-        var isDeleted = _articleService.Delete(id);
-
-        if (isDeleted) return NoContent();
-        else return NotFound();
+         _articleService.Delete(id);
+         return NoContent();
     }
 
     [HttpPut("{id}")]
@@ -67,10 +63,7 @@ public class ArticleController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-
-        var isUpdated = _articleService.Update(id, dto);
-
-        if (!isUpdated) return NotFound();
+        _articleService.Update(id, dto);
         return Ok();
     }
 }

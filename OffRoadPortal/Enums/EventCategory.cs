@@ -10,7 +10,8 @@ namespace OffRoadPortal.Enums;
 
 public enum EventCategory
 {
-    Turistic,
-    Adventure,
-    Professional
+    Expedition = 0,
+    Race = 1,
+    Rally = 2,
+    Holiday = 3,
 }

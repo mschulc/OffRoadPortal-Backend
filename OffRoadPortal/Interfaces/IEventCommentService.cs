@@ -13,9 +13,9 @@ namespace OffRoadPortal.Interfaces;
 
 public interface IEventCommentService
 {
-    long Create(CreateEventCommentDto dto);
-    bool Delete(long id);
-    IEnumerable<EventCommentDto> GetAll();
-    EventCommentDto GetById(long id);
-    bool Update(long id, UpdateEventCommentDto dto);
+    long Create(long eventId, CreateEventCommentDto dto);
+    void Delete(long eventId, long id);
+    List<EventCommentDto> GetAll(long eventId);
+    EventCommentDto GetById(long eventId, long id);
+    void Update(long eventId, long id, UpdateEventCommentDto dto);
 }

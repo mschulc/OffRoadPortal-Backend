@@ -22,5 +22,5 @@ public class EventDto
     public EventCategory Category { get; set; }
     public VehicleType Type { get; set; }
     public virtual List<User>? Participants { get; set; }
-    public virtual List<EventComment>? Comments { get; set; }
+    public virtual List<EventComment>? EventComments { get; set; }
 }

@@ -13,5 +13,4 @@ public class UpdateEventCommentDto
     public long EventId { get; set; }
     public long? UserId { get; set; }
     public string? Content { get; set; }
-    public DateTime? ModifiedDate { get; set; }
 }

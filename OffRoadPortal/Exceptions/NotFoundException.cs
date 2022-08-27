@@ -3,13 +3,12 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: ImageDto.cs                                       //
+// File: NotFoundException.cs                              //
 /////////////////////////////////////////////////////////////
 
-namespace OffRoadPortal.Dtos;
+namespace OffRoadPortal.Exceptions;
 
-public class ImageDto
+public class NotFoundException : Exception
 {
-    public long Id { get; set; }
-    public string? Url { get; set; }
+    public NotFoundException(string message) : base(message) { }
 }

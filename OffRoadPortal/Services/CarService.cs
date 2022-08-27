@@ -7,8 +7,10 @@
 /////////////////////////////////////////////////////////////
 
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OffRoadPortal.Dtos;
 using OffRoadPortal.Entities;
+using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
 
@@ -25,52 +27,63 @@ public class CarService : ICarService
         _mapper = mapper;
     }
 
-    public CarDto GetById(long id)
+    public CarDto GetById(long userId, long carId)
     {
-        var car = _dbContext.Cars.FirstOrDefault(c => c.Id == id);
-
-        if (car is null) return null;
+        GetUserById(userId);
+        var car = GetCarById(carId, userId);
 
         var result = _mapper.Map<CarDto>(car);
         return result;
     }
 
-    public IEnumerable<CarDto> GetAll()
+    public List<CarDto> GetAll(long userId)
     {
-        var cars = _dbContext.Cars.ToList();
-
-        var result = _mapper.Map<List<CarDto>>(cars);
-
+        var user = GetUserById(userId);
+        var result = _mapper.Map<List<CarDto>>(user.Cars);
         return result;
     }
 
-    public long Create(CreateCarDto dto)
+    public long Create(long userId, CreateCarDto dto)
     {
+        GetUserById(userId);
         var car = _mapper.Map<Car>(dto);
-        _dbContext.Cars.Add(car);
+        car.UserId = userId;
+        _dbContext.Cars?.Add(car);
         _dbContext.SaveChanges();
         return car.Id;
-    }
+    } 
 
-    public bool Delete(long id)
+    public void Delete(long userId, long carId)
     {
-        var car = _dbContext.Cars.FirstOrDefault(c => c.Id == id);
+        GetUserById(userId);
+        var car = GetCarById(carId, userId);
 
-        if (car is null) return false;
-
-        _dbContext.Cars.Remove(car);
+        _dbContext.Cars?.Remove(car);
         _dbContext.SaveChanges();
-        return true;
     }
 
-    public bool Update(long id, UpdateCarDto dto)
+    public void Update(long userId, long carId, UpdateCarDto dto)
     {
-        var car = _dbContext.Cars.FirstOrDefault(c => c.Id == id);
-
-        if (car is null) return false;
+        GetUserById(userId);
+        GetCarById(carId, userId);
 
         _mapper.Map<Car>(dto);
         _dbContext.SaveChanges();
-        return true;
+    }
+
+    private User GetUserById(long id)
+    {
+        var user = _dbContext.Users.Include(u => u.Cars).FirstOrDefault(u => u.Id == id);
+        if (user is null)
+            throw new NotFoundException("User not found");
+        return user;
+    }
+
+    private Car GetCarById(long carId, long userId)
+    {
+        var car = _dbContext.Cars.FirstOrDefault(c => c.Id == carId);
+        if (car is null || car.UserId != userId)
+            throw new NotFoundException("Car not found");
+        return car;
     }
 }

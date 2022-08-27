@@ -13,9 +13,8 @@ namespace OffRoadPortal.Models;
 public class CreateArticleCommentDto
 {
     public long ArticleId { get; set; }
+    public string? Author { get; set; }
     public long? UserId { get; set; }
     public string? Content { get; set; }
     public DateTime CreatedDate { get; set; }
-    public DateTime? ModifiedDate { get; set; }
-    public virtual User? User { get; set; }
 }
