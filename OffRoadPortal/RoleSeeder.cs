@@ -28,10 +28,10 @@ public class RoleSeeder
             {
                 var roles = new List<Role>()
                 {
-                    new Role{Id = 1, Name = "Standard" },
-                    new Role{Id = 2, Name = "Premium"},
-                    new Role{Id = 3, Name = "Redactor" },
-                    new Role{Id = 4, Name = "Admin"}
+                    new Role{ Name = "Standard" },
+                    new Role{ Name = "Premium"},
+                    new Role{ Name = "Redactor" },
+                    new Role{ Name = "Admin"}
                 };
 
                 _dbContext.Roles.AddRange(roles);

@@ -67,7 +67,8 @@ public class CarService : ICarService
         GetUserById(userId);
         GetCarById(carId, userId);
 
-        _mapper.Map<Car>(dto);
+        var car = _mapper.Map<Car>(dto);
+        _dbContext.Cars?.Update(car);
         _dbContext.SaveChanges();
     }
 

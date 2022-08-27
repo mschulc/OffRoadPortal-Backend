@@ -66,7 +66,8 @@ public class EventCommentService : IEventCommentService
         GetEventById(eventId);
         GetEventCommentById(id, eventId);
 
-        _mapper.Map<EventComment>(dto);
+        var eventComment = _mapper.Map<EventComment>(dto);
+        _dbContext.EventComments?.Update(eventComment);
         _dbContext.SaveChanges();
     }
 

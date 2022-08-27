@@ -64,7 +64,8 @@ public class ArticleService : IArticleService
     {
         GetArticleById(id);
 
-        _mapper.Map<Article>(dto);
+        var article = _mapper.Map<Article>(dto);
+        _dbContext.Articles?.Update(article);
         _dbContext.SaveChanges();
     }
 

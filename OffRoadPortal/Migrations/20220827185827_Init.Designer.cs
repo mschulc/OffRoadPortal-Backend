@@ -12,7 +12,7 @@ using OffRoadPortal.Services;
 namespace OffRoadPortal.Migrations
 {
     [DbContext(typeof(OffRoadPortalDbContext))]
-    [Migration("20220827111747_Init")]
+    [Migration("20220827185827_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -275,11 +275,10 @@ namespace OffRoadPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileImageUrl")
                         .HasColumnType("nvarchar(max)");

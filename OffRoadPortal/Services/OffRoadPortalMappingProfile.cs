@@ -18,7 +18,6 @@ public class OffRoadPortalMappingProfile : Profile
     public OffRoadPortalMappingProfile()
     {
         //User Mapping
-        CreateMap<User, UserDto>();
 
         //Article Mapping
         CreateMap<Article, ArticleDto>();

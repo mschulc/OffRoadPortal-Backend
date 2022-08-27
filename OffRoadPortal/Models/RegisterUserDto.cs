@@ -3,26 +3,20 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: UserDto.cs                                        //
+// File: RegisterUserDto.cs                                //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Entities;
-using OffRoadPortal.Enums;
+namespace OffRoadPortal.Models;
 
-namespace OffRoadPortal.Dtos;
-
-public class UserDto
-{
-    public long Id { get; set; }
+public class RegisterUserDto
+{ 
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Email { get; set; }
-    public int PhoneNumber { get; set; }
-    public int Age { get; set; }
-    public UserRole Role { get; set; }
-    public string? Description { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? Password { get; set; }
+    public string? ConfirmPassword { get; set; }
+    public DateTime? BirthDate { get; set; }
     public string? City { get; set; }
-    public string? ProfileImageUrl { get; set; }
-    public virtual List<Car>? Cars { get; set; }
-    public virtual List<Event>? Events { get; set; }
+    public int RoleId { get; set; } = 1;
 }

@@ -3,15 +3,15 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: UserRole.cs                                       //
+// File: IAccountService.cs                                //
 /////////////////////////////////////////////////////////////
 
-namespace OffRoadPortal.Enums;
+using OffRoadPortal.Models;
 
-public enum UserRole
+namespace OffRoadPortal.Interfaces
 {
-    Standard = 1,
-    Premium = 2,
-    Redactor = 3,
-    Admin = 4
+    public interface IAccountService
+    {
+        void RegisterUser(RegisterUserDto dto);
+    }
 }

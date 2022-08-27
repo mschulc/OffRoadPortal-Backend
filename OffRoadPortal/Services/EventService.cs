@@ -63,7 +63,8 @@ public class EventService : IEventService
     public void Update(long id, UpdateEventDto dto)
     {
         GetEventById(id);
-        _mapper.Map<Event>(dto);
+        var _event = _mapper.Map<Event>(dto);
+        _dbContext.Events?.Update(_event);
         _dbContext.SaveChanges();
     }
 
