@@ -7,12 +7,16 @@
 /////////////////////////////////////////////////////////////
 
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using OffRoadPortal.Authorization;
 using OffRoadPortal.Database;
 using OffRoadPortal.Entities;
+using OffRoadPortal.Enums;
 using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
+using System.Security.Claims;
 
 namespace OffRoadPortal.Services;
 
@@ -21,12 +25,15 @@ public class ArticleService : IArticleService
     private readonly OffRoadPortalDbContext _dbContext;
     private readonly IMapper _mapper;
     private readonly ILogger<ArticleService> _logger;
+    private readonly IAuthorizationService _authorizationService;
 
-    public ArticleService(OffRoadPortalDbContext dbContext, IMapper mapper, ILogger<ArticleService> logger)
+    public ArticleService(OffRoadPortalDbContext dbContext, IMapper mapper, ILogger<ArticleService> logger, 
+        IAuthorizationService authorizationService)
     {
         _dbContext = dbContext;
         _mapper = mapper;
         _logger = logger;
+        _authorizationService = authorizationService;
     }
 
     public ArticleDto GetById(long id)
@@ -45,9 +52,10 @@ public class ArticleService : IArticleService
         return result;
     }
 
-    public long Create(CreateArticleDto dto)
+    public long Create(CreateArticleDto dto, long userId)
     {
         var article = _mapper.Map<Article>(dto);
+        article.AuthorId = userId;
         _dbContext.Articles?.Add(article);
         _dbContext.SaveChanges();
         return article.Id;
@@ -60,9 +68,15 @@ public class ArticleService : IArticleService
         _dbContext.SaveChanges();
     }
 
-    public void Update(long id, UpdateArticleDto dto)
+    public void Update(long id, UpdateArticleDto dto, ClaimsPrincipal user)
     {
         var article = GetArticleById(id);
+
+        var authorizationResult = _authorizationService.AuthorizeAsync
+            (user, article, new ResorceOperationRequirement(ResourceOperation.Update)).Result;
+
+        if (!authorizationResult.Succeeded)
+            throw new FrobidException("The resource is not allowed");
 
         article.Title = dto.Title;
         article.Content = dto.Content;

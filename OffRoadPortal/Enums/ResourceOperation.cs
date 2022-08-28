@@ -3,16 +3,15 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: VehicleType.cs                                    //
+// File: ResourceOperation.cs                              //
 /////////////////////////////////////////////////////////////
 
 namespace OffRoadPortal.Enums;
 
-public enum VehicleType
+public enum ResourceOperation
 {
-    Car,
-    Truck,
-    Motorcycle,
-    Bicycle,
-    All
+    Crete,
+    Read,
+    Update,
+    Delete
 }

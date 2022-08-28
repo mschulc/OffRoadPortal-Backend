@@ -13,9 +13,9 @@ public class Article
     public long Id { get; set; }
     public string? Title { get; set; }
     public string? Content { get; set; }
-    public long AuthorId { get; set; }
-    public string? Author { get; set; }
     public DateTime CreatedDate { get; set; }
     public string? ImageUrl { get; set; }
+    public long? AuthorId { get; set; }
+    //public virtual User? Author { get; set; }
     public virtual List<ArticleComment>? ArticleComments { get; set; }
 }

@@ -6,14 +6,17 @@
 // File: ArticleController.cs                              //
 /////////////////////////////////////////////////////////////
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
+using System.Security.Claims;
 
 namespace OffRoadPortal.Controllers;
 
 [ApiController]
 [Route("/article")]
+[Authorize]
 public class ArticleController : ControllerBase
 {
     private readonly IArticleService _articleService;
@@ -24,6 +27,7 @@ public class ArticleController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public ActionResult<IEnumerable<ArticleDto>> GetAll()
     {
         var articles = _articleService.GetAll();
@@ -31,6 +35,7 @@ public class ArticleController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public ActionResult<ArticleDto> GetById([FromRoute] long id)
     {
         var article = _articleService.GetById(id);
@@ -38,13 +43,11 @@ public class ArticleController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin,Redactor")]
     public ActionResult CreateArticle([FromBody] CreateArticleDto dto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        var createdArticleId = _articleService.Create(dto);
+        var userId = long.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        var createdArticleId = _articleService.Create(dto, userId);
         return Created($"/article/{createdArticleId}", null);
     }
 
@@ -58,11 +61,7 @@ public class ArticleController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult Update([FromBody] UpdateArticleDto dto, [FromRoute] long id)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        _articleService.Update(id, dto);
+        _articleService.Update(id, dto, User);
         return Ok();
     }
 }

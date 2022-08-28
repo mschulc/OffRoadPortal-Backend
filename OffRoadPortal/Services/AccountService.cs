@@ -58,24 +58,36 @@ public class AccountService : IAccountService
             .FirstOrDefault(u => u.Email == dto.Email);
 
         if(user is null)
-        {
             throw new BadRequestException("Invalid username of password");
-        }
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
         if(result == PasswordVerificationResult.Failed)
-        {
             throw new BadRequestException("Invalid username of password");
-        }
+
         var claims = new List<Claim>()
         {
             new Claim(ClaimTypes.NameIdentifier, $"{user.Id}"),
             new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
             new Claim(ClaimTypes.Role, $"{user.Role}"),
-            new Claim("BirthDate", user.BirthDate.Value.ToString("dd-MM-yyyy")),
-            new Claim("PhoneNumber", user.PhoneNumber),
-            new Claim("City", user.City)
+            new Claim("BirthDate", user.BirthDate.Value.ToString("dd-MM-yyyy")),  
         };
+
+        if(!string.IsNullOrEmpty(user.ProfileImageUrl))
+        {
+            claims.Add(new Claim("ProfileImageUrl", user.ProfileImageUrl));
+        }
+        if (!string.IsNullOrEmpty(user.PhoneNumber))
+        {
+            claims.Add(new Claim("PhoneNumber", user.PhoneNumber));
+        }
+        if (!string.IsNullOrEmpty(user.City))
+        {
+            claims.Add(new Claim("City", user.City));
+        }
+        if (!(user.Cars is null) || user.Cars?.Count > 0)
+        {
+            claims.Add(new Claim("Cars", "YES"));
+        }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);

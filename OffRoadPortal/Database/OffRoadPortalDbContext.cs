@@ -39,8 +39,6 @@ namespace OffRoadPortal.Database
             modelBuilder.Entity<Article>()
                .Property(a => a.Content).IsRequired();
             modelBuilder.Entity<Article>()
-               .Property(a => a.Author).IsRequired();
-            modelBuilder.Entity<Article>()
                .Property(a => a.ImageUrl).IsRequired();
 
             //ArticleCommemt Entity

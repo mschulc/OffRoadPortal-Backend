@@ -3,16 +3,19 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: VehicleType.cs                                    //
+// File: MinimumAgeRequirement.cs                          //
 /////////////////////////////////////////////////////////////
 
-namespace OffRoadPortal.Enums;
+using Microsoft.AspNetCore.Authorization;
 
-public enum VehicleType
+namespace OffRoadPortal.Authorization;
+
+public class MinimumAgeRequirement : IAuthorizationRequirement
 {
-    Car,
-    Truck,
-    Motorcycle,
-    Bicycle,
-    All
+    public int MinimumAge { get; }
+
+    public MinimumAgeRequirement(int minimumAge)
+    {
+        MinimumAge = minimumAge;
+    }
 }

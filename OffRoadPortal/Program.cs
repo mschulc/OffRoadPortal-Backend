@@ -21,6 +21,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using OffRoadPortal.Database;
 using OffRoadPortal.OtherServices;
+using OffRoadPortal.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 var authenticationSettings = new AuthenticationSettings();
@@ -56,6 +58,13 @@ builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsi
 builder.Services.AddCors();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("HasCar", build => build.RequireClaim("Car"));
+    options.AddPolicy("Adult", build => build.AddRequirements(new MinimumAgeRequirement(18)));
+});
+builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OffRoadPortalDbContext>();
@@ -91,6 +100,8 @@ app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseAuthorization();
 
 app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(@"http://localhost:4200"));
 

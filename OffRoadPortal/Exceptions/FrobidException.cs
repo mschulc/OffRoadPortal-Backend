@@ -3,16 +3,12 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: VehicleType.cs                                    //
+// File: FrobidException.cs                                //
 /////////////////////////////////////////////////////////////
 
-namespace OffRoadPortal.Enums;
+namespace OffRoadPortal.Exceptions;
 
-public enum VehicleType
+public class FrobidException : Exception
 {
-    Car,
-    Truck,
-    Motorcycle,
-    Bicycle,
-    All
+    public FrobidException(string message) : base(message) { }
 }

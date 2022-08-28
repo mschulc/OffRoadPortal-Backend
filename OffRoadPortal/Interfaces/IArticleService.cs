@@ -7,14 +7,15 @@
 /////////////////////////////////////////////////////////////
 
 using OffRoadPortal.Models;
+using System.Security.Claims;
 
 namespace OffRoadPortal.Interfaces;
 
 public interface IArticleService
 {
-    long Create(CreateArticleDto dto);
+    long Create(CreateArticleDto dto, long userId);
     void Delete(long id);
     IEnumerable<ArticleDto> GetAll();
     ArticleDto GetById(long id);
-    void Update(long id, UpdateArticleDto dto);
+    void Update(long id, UpdateArticleDto dto, ClaimsPrincipal user);
 }
