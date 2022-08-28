@@ -8,7 +8,7 @@
 
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using OffRoadPortal.Dtos;
+using OffRoadPortal.Database;
 using OffRoadPortal.Entities;
 using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;
@@ -74,7 +74,7 @@ public class CarService : ICarService
         car.Engine = dto.Engine;
         car.Fuel = dto.Fuel;
         car.Description = car.Description;
-        //car.ImageUrl = dto.ImageUrl;
+        car.ImageUrl = dto.ImageUrl;
 
         _dbContext.Cars?.Update(car);
         _dbContext.SaveChanges();

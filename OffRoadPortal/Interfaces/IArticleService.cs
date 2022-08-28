@@ -6,7 +6,6 @@
 // File: IArticleService.cs                                //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Dtos;
 using OffRoadPortal.Models;
 
 namespace OffRoadPortal.Interfaces;

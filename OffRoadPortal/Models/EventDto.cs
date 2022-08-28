@@ -9,7 +9,7 @@
 using OffRoadPortal.Entities;
 using OffRoadPortal.Enums;
 
-namespace OffRoadPortal.Dtos;
+namespace OffRoadPortal.Models;
 
 public class EventDto
 {

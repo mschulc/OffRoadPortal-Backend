@@ -6,7 +6,6 @@
 // File: EventCommentService.cs                            //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Dtos;
 using OffRoadPortal.Models;
 
 namespace OffRoadPortal.Interfaces;

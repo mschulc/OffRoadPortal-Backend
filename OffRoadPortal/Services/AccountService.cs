@@ -7,6 +7,7 @@
 /////////////////////////////////////////////////////////////
 
 using Microsoft.AspNetCore.Identity;
+using OffRoadPortal.Database;
 using OffRoadPortal.Entities;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;

@@ -8,7 +8,7 @@
 
 using OffRoadPortal.Entities;
 
-namespace OffRoadPortal.Dtos;
+namespace OffRoadPortal.Models;
 
 public class EventCommentDto
 {

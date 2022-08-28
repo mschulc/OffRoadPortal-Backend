@@ -7,8 +7,8 @@
 /////////////////////////////////////////////////////////////
 
 using FluentValidation;
+using OffRoadPortal.Database;
 using OffRoadPortal.Models;
-using OffRoadPortal.Services;
 
 namespace OffRoadPortal.Validators;
 

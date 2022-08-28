@@ -6,7 +6,6 @@
 // File: IEventService.cs                                  //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Dtos;
 using OffRoadPortal.Models;
 
 namespace OffRoadPortal.Interfaces;

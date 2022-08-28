@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////////
 
 using AutoMapper;
-using OffRoadPortal.Dtos;
+using OffRoadPortal.Database;
 using OffRoadPortal.Entities;
 using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;

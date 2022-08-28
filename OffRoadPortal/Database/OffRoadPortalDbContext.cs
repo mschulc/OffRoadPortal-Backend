@@ -9,7 +9,7 @@
 using Microsoft.EntityFrameworkCore;
 using OffRoadPortal.Entities;
 
-namespace OffRoadPortal.Services
+namespace OffRoadPortal.Database
 {
     public class OffRoadPortalDbContext : DbContext
     {

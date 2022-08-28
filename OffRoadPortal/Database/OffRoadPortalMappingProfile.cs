@@ -7,11 +7,10 @@
 /////////////////////////////////////////////////////////////
 
 using AutoMapper;
-using OffRoadPortal.Dtos;
 using OffRoadPortal.Entities;
 using OffRoadPortal.Models;
 
-namespace OffRoadPortal.Services;
+namespace OffRoadPortal.Database;
 
 public class OffRoadPortalMappingProfile : Profile
 {
@@ -28,7 +27,7 @@ public class OffRoadPortalMappingProfile : Profile
         CreateMap<CreateArticleCommentDto, ArticleComment>();
 
         //Event Mapping
-        CreateMap<Event, EventDto>();   
+        CreateMap<Event, EventDto>();
         CreateMap<CreateEventDto, Event>();
 
         //Event comment Mapping

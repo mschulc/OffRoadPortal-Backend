@@ -6,10 +6,10 @@
 // File: RoleSeeder.cs                                     //
 /////////////////////////////////////////////////////////////
 
+using OffRoadPortal.Database;
 using OffRoadPortal.Entities;
-using OffRoadPortal.Services;
 
-namespace OffRoadPortal;
+namespace OffRoadPortal.OtherServices;
 
 public class RoleSeeder
 {
@@ -22,9 +22,9 @@ public class RoleSeeder
 
     public void Seed()
     {
-        if(_dbContext.Database.CanConnect())
+        if (_dbContext.Database.CanConnect())
         {
-            if(!_dbContext.Roles.Any())
+            if (!_dbContext.Roles.Any())
             {
                 var roles = new List<Role>()
                 {

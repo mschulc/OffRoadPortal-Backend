@@ -10,7 +10,6 @@ using OffRoadPortal.Interfaces;
 using OffRoadPortal.Services;
 using NLog.Web;
 using OffRoadPortal.Middleware;
-using OffRoadPortal;
 using Microsoft.AspNetCore.Identity;
 using OffRoadPortal.Entities;
 using FluentValidation;
@@ -21,6 +20,8 @@ using OffRoadPortal.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
+using OffRoadPortal.Database;
+using OffRoadPortal.OtherServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var authenticationSettings = new AuthenticationSettings();

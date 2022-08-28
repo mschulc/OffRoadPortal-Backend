@@ -3,21 +3,16 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: ArticleDto.cs                                     //
+// File: ArticleCommentDto.cs                              //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Entities;
+namespace OffRoadPortal.Models;
 
-namespace OffRoadPortal.Dtos;
-
-public class ArticleDto
+public class ArticleCommentDto
 {
     public long Id { get; set; }
-    public string? Title { get; set; }
+    public long ArticleId { get; set; }
+    public long? UserId { get; set; }
     public string? Content { get; set; }
-    public long AuthorId { get; set; }
-    public string? Author { get; set; }
     public DateTime CreatedDate { get; set; }
-    public string? ImageUrl { get; set; }
-    public virtual List<ArticleComment>? ArticleComments { get; set; }
 }
