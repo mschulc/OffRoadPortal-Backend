@@ -17,7 +17,6 @@ public class User
     public string? PhoneNumber { get; set; }
     public string? PasswordHash { get; set; }
     public DateTime? BirthDate { get; set; }
-    public string? Description { get; set; }
     public string? City { get; set; }
     public string? ProfileImageUrl { get; set; }
 

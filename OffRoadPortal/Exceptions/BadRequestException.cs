@@ -3,16 +3,12 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: IAccountService.cs                                //
+// File: BadRequestException.cs                            //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Models;
+namespace OffRoadPortal.Exceptions;
 
-namespace OffRoadPortal.Interfaces
+public class BadRequestException : Exception
 {
-    public interface IAccountService
-    {
-        void RegisterUser(RegisterUserDto dto);
-        public string GenerateJwt(LoginUserDto dto);
-    }
+    public BadRequestException(string message) : base(message) {  }
 }

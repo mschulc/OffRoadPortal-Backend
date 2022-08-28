@@ -19,7 +19,6 @@ using FluentValidation.AspNetCore;
 using OffRoadPortal.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Builder;
 using OffRoadPortal.Database;
 using OffRoadPortal.OtherServices;
 
