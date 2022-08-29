@@ -16,7 +16,6 @@ using OffRoadPortal.Enums;
 using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
-using System.Security.Claims;
 
 namespace OffRoadPortal.Services;
 
@@ -26,14 +25,16 @@ public class ArticleService : IArticleService
     private readonly IMapper _mapper;
     private readonly ILogger<ArticleService> _logger;
     private readonly IAuthorizationService _authorizationService;
+    private readonly IUserContextService _userContextService;
 
     public ArticleService(OffRoadPortalDbContext dbContext, IMapper mapper, ILogger<ArticleService> logger, 
-        IAuthorizationService authorizationService)
+        IAuthorizationService authorizationService, IUserContextService userContextService)
     {
         _dbContext = dbContext;
         _mapper = mapper;
         _logger = logger;
         _authorizationService = authorizationService;
+        _userContextService = userContextService;
     }
 
     public ArticleDto GetById(long id)
@@ -52,10 +53,10 @@ public class ArticleService : IArticleService
         return result;
     }
 
-    public long Create(CreateArticleDto dto, long userId)
+    public long Create(CreateArticleDto dto)
     {
         var article = _mapper.Map<Article>(dto);
-        article.AuthorId = userId;
+        article.AuthorId = _userContextService.GetUserId;
         _dbContext.Articles?.Add(article);
         _dbContext.SaveChanges();
         return article.Id;
@@ -64,16 +65,23 @@ public class ArticleService : IArticleService
     public void Delete(long id)
     {
         var article = GetArticleById(id);
+
+        var authorizationResult = _authorizationService.AuthorizeAsync
+            (_userContextService.User, article, new ResorceOperationRequirement(ResourceOperation.Delete)).Result;
+
+        if (!authorizationResult.Succeeded)
+            throw new FrobidException("The resource is not allowed");
+
         _dbContext.Articles?.Remove(article);
         _dbContext.SaveChanges();
     }
 
-    public void Update(long id, UpdateArticleDto dto, ClaimsPrincipal user)
+    public void Update(long id, UpdateArticleDto dto)
     {
         var article = GetArticleById(id);
 
         var authorizationResult = _authorizationService.AuthorizeAsync
-            (user, article, new ResorceOperationRequirement(ResourceOperation.Update)).Result;
+            (_userContextService.User, article, new ResorceOperationRequirement(ResourceOperation.Update)).Result;
 
         if (!authorizationResult.Succeeded)
             throw new FrobidException("The resource is not allowed");

@@ -3,13 +3,16 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: Role.cs                                           //
-///////////////////////////////////////////////////////////// 
+// File: IUserContextService.cs                            //
+/////////////////////////////////////////////////////////////
 
-namespace OffRoadPortal.Entities;
+using System.Security.Claims;
 
-public class Role
+namespace OffRoadPortal.Interfaces
 {
-    public int Id { get; set; }
-    public string? Name { get; set; }
+    public interface IUserContextService
+    {
+        long? GetUserId { get; }
+        ClaimsPrincipal User { get; }
+    }
 }

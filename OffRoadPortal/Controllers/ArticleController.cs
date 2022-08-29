@@ -47,7 +47,7 @@ public class ArticleController : ControllerBase
     public ActionResult CreateArticle([FromBody] CreateArticleDto dto)
     {
         var userId = long.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        var createdArticleId = _articleService.Create(dto, userId);
+        var createdArticleId = _articleService.Create(dto);
         return Created($"/article/{createdArticleId}", null);
     }
 
@@ -61,7 +61,7 @@ public class ArticleController : ControllerBase
     [HttpPut("{id}")]
     public ActionResult Update([FromBody] UpdateArticleDto dto, [FromRoute] long id)
     {
-        _articleService.Update(id, dto, User);
+        _articleService.Update(id, dto);
         return Ok();
     }
 }

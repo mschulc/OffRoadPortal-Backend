@@ -16,6 +16,5 @@ public class Article
     public DateTime CreatedDate { get; set; }
     public string? ImageUrl { get; set; }
     public long? AuthorId { get; set; }
-    //public virtual User? Author { get; set; }
     public virtual List<ArticleComment>? ArticleComments { get; set; }
 }

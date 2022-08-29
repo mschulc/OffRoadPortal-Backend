@@ -11,25 +11,24 @@ using OffRoadPortal.Entities;
 using OffRoadPortal.Enums;
 using System.Security.Claims;
 
-namespace OffRoadPortal.Authorization
+namespace OffRoadPortal.Authorization;
+
+public class ResourceOperationRequirementHandler : AuthorizationHandler<ResorceOperationRequirement, Article>
 {
-    public class ResourceOperationRequirementHandler : AuthorizationHandler<ResorceOperationRequirement, Article>
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ResorceOperationRequirement requirement, Article article)
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ResorceOperationRequirement requirement, Article article)
+        if(requirement.ResourceOperation == ResourceOperation.Read || 
+            requirement.ResourceOperation == ResourceOperation.Crete)
         {
-            if(requirement.ResourceOperation == ResourceOperation.Read || 
-                requirement.ResourceOperation == ResourceOperation.Crete)
-            {
-                context.Succeed(requirement);
-            }
-
-            var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            if (article.AuthorId == long.Parse(userId))
-            {
-                context.Succeed(requirement);
-            }
-
-            return Task.CompletedTask;
+            context.Succeed(requirement);
         }
+
+        var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        if (article.AuthorId == long.Parse(userId))
+        {
+            context.Succeed(requirement);
+        }
+
+        return Task.CompletedTask;
     }
 }

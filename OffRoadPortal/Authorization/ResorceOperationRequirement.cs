@@ -19,5 +19,4 @@ public class ResorceOperationRequirement : IAuthorizationRequirement
     }
 
     public ResourceOperation ResourceOperation { get; }
-
 }
