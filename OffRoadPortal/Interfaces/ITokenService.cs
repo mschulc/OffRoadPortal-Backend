@@ -3,22 +3,15 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: LoginUserDtoValidator.cs                          //
+// File: ITokenService.cs                                  //
 /////////////////////////////////////////////////////////////
 
-using FluentValidation;
-using OffRoadPortal.Models;
+using OffRoadPortal.Entities;
 
-namespace OffRoadPortal.Validators;
-
-public class LoginUserDtoValidator : AbstractValidator<LoginUserDto>
+namespace OffRoadPortal.Interfaces
 {
-    public LoginUserDtoValidator()
+    public interface ITokenService
     {
-        RuleFor(x => x.Email)
-            .NotEmpty()
-            .EmailAddress();
-
-        RuleFor(x => x.Password).MinimumLength(8);
+        string GenerateToken(User user);
     }
 }

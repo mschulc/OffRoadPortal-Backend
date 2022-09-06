@@ -57,6 +57,7 @@ public class ArticleService : IArticleService
     {
         var article = _mapper.Map<Article>(dto);
         article.AuthorId = _userContextService.GetUserId;
+        article.Author = _userContextService.GetUserName;
         _dbContext.Articles?.Add(article);
         _dbContext.SaveChanges();
         return article.Id;

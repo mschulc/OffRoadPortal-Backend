@@ -13,6 +13,6 @@ namespace OffRoadPortal.Interfaces
     public interface IAccountService
     {
         void RegisterUser(RegisterUserDto dto);
-        public string GenerateJwt(LoginUserDto dto);
+        public UserTokenDto LoginUser(LoginUserDto dto);
     }
 }

@@ -21,9 +21,6 @@ public class CreateArticleDto
     public long AuthorId { get; set; }
 
     [Required]
-    public string? Author { get; set; }
-
-    [Required]
     public string? ImageUrl { get; set; }
     public DateTime CreatedDate { get; set; }
 }

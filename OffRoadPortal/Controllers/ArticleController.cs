@@ -43,7 +43,7 @@ public class ArticleController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin,Redactor")]
+    [Authorize(Roles = "Redactor")]
     public ActionResult CreateArticle([FromBody] CreateArticleDto dto)
     {
         var userId = long.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -52,6 +52,7 @@ public class ArticleController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Redactor")]
     public ActionResult Delete([FromRoute] long id)
     {
          _articleService.Delete(id);
@@ -59,6 +60,7 @@ public class ArticleController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin, Redactor")]
     public ActionResult Update([FromBody] UpdateArticleDto dto, [FromRoute] long id)
     {
         _articleService.Update(id, dto);

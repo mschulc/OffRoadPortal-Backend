@@ -23,4 +23,7 @@ public class UserContextService : IUserContextService
     public ClaimsPrincipal User => _httpContextAccessor.HttpContext?.User;
     public long? GetUserId =>
         User is null ? null : long.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+    public string? GetUserName =>
+        User is null ? null : (User.FindFirst(c => c.Type == ClaimTypes.Name).Value);
 }

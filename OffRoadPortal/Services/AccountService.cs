@@ -8,16 +8,11 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using OffRoadPortal.Authentication;
 using OffRoadPortal.Database;
 using OffRoadPortal.Entities;
 using OffRoadPortal.Exceptions;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace OffRoadPortal.Services;
 
@@ -25,13 +20,16 @@ public class AccountService : IAccountService
 {
     private readonly OffRoadPortalDbContext _dbContext;
     private readonly IPasswordHasher<User> _passwordHasher;
-    private readonly AuthenticationSettings _authenticationSettings;
+    private readonly ILogger<AccountService> _logger;
+    private readonly ITokenService _tokenService;
 
-    public AccountService(OffRoadPortalDbContext dbContext, IPasswordHasher<User> passwordHasher, AuthenticationSettings authenticationSettings)
+    public AccountService(OffRoadPortalDbContext dbContext, IPasswordHasher<User> passwordHasher, 
+         ILogger<AccountService> logger, ITokenService tokenService)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
-        _authenticationSettings = authenticationSettings;
+        _logger = logger;
+        _tokenService = tokenService;
     }
 
     public void RegisterUser(RegisterUserDto dto)
@@ -52,51 +50,18 @@ public class AccountService : IAccountService
         _dbContext.SaveChanges();
     }
 
-    public string GenerateJwt(LoginUserDto dto)
+    public UserTokenDto LoginUser(LoginUserDto dto)
     {
         var user = _dbContext.Users.Include(u => u.Role)
             .FirstOrDefault(u => u.Email == dto.Email);
-
-        if(user is null)
+        if (user is null)
             throw new BadRequestException("Invalid username of password");
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
         if(result == PasswordVerificationResult.Failed)
             throw new BadRequestException("Invalid username of password");
 
-        var claims = new List<Claim>()
-        {
-            new Claim(ClaimTypes.NameIdentifier, $"{user.Id}"),
-            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-            new Claim(ClaimTypes.Role, $"{user.Role}"),
-            new Claim("BirthDate", user.BirthDate.Value.ToString("dd-MM-yyyy")),  
-        };
-
-        if(!string.IsNullOrEmpty(user.ProfileImageUrl))
-        {
-            claims.Add(new Claim("ProfileImageUrl", user.ProfileImageUrl));
-        }
-        if (!string.IsNullOrEmpty(user.PhoneNumber))
-        {
-            claims.Add(new Claim("PhoneNumber", user.PhoneNumber));
-        }
-        if (!string.IsNullOrEmpty(user.City))
-        {
-            claims.Add(new Claim("City", user.City));
-        }
-        if (!(user.Cars is null) || user.Cars?.Count > 0)
-        {
-            claims.Add(new Claim("Cars", "YES"));
-        }
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
-        var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-        var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
-        var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer,
-            claims,
-            expires: expires,
-            signingCredentials: cred);
-        var tokenHandler = new JwtSecurityTokenHandler();
-        return tokenHandler.WriteToken(token);
+        var jwtToken = _tokenService.GenerateToken(user);
+        return new UserTokenDto { Id = user.Id, Token = jwtToken };
     }
 }

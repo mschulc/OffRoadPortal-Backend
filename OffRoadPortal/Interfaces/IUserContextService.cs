@@ -12,6 +12,7 @@ namespace OffRoadPortal.Interfaces
 {
     public interface IUserContextService
     {
+        public string? GetUserName { get; }
         long? GetUserId { get; }
         ClaimsPrincipal User { get; }
     }

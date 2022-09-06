@@ -53,8 +53,8 @@ builder.Logging.SetMinimumLevel(LogLevel.Trace);
 builder.Host.UseNLog();
 
 //Cors policy
-builder.Services.AddControllers();
-builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+builder.Services.AddControllers().AddFluentValidation();
+//builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddCors();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -65,6 +65,7 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
 builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OffRoadPortalDbContext>();
@@ -94,6 +95,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseResponseCaching();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 

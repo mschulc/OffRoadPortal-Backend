@@ -6,6 +6,7 @@
 // File: ArticleCommentController.cs                       //
 /////////////////////////////////////////////////////////////
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
@@ -14,6 +15,7 @@ namespace OffRoadPortal.Controllers;
 
 [ApiController]
 [Route("/article/{articleId}/comment")]
+[Authorize]
 public class ArticleCommentController : ControllerBase
 {
     private readonly IArticleCommentService _articleCommentService;
@@ -24,6 +26,7 @@ public class ArticleCommentController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public ActionResult<List<ArticleCommentDto>> GetAll(long articleId)
     {
         var articleComments = _articleCommentService.GetAll(articleId);
@@ -38,7 +41,8 @@ public class ArticleCommentController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult CreateEvent([FromRoute] long articleId, [FromBody] CreateArticleCommentDto dto)
+    [Authorize(Roles = "Admin")]
+    public ActionResult CreateComment([FromRoute] long articleId, [FromBody] CreateArticleCommentDto dto)
     {
         if (!ModelState.IsValid)
         {
@@ -49,6 +53,7 @@ public class ArticleCommentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public ActionResult Delete([FromRoute] long articleId, [FromRoute] long id)
     {
         _articleCommentService.Delete(articleId, id);
