@@ -42,7 +42,8 @@ public class AccountService : IAccountService
             LastName = dto.LastName,
             PhoneNumber = dto.PhoneNumber,
             City = dto.City,
-            RoleId = dto.RoleId
+            RoleId = dto.RoleId,
+            ProfileImageUrl = dto.ProfileImageUrl
         };
         var hashedPassword = _passwordHasher.HashPassword(newUser, dto.Password);
         newUser.PasswordHash = hashedPassword;

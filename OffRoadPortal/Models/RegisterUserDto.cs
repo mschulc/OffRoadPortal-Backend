@@ -18,7 +18,6 @@ public class RegisterUserDto
     public string? ConfirmPassword { get; set; }
     public DateTime? BirthDate { get; set; }
     public string? City { get; set; }
-    private string profileImageUrl = "/assets/profile/default.jpg";
+    public string ProfileImageUrl { get; set; } = "/assets/profile/default.jpg";
     public int RoleId { get; set; } = 1;
-    public string ProfileImageUrl { get => profileImageUrl; set => profileImageUrl = value; }
 }
