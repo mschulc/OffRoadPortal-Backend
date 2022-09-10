@@ -33,7 +33,7 @@ public class AccountController : ControllerBase
     [HttpPost("login")]
     public ActionResult Login([FromBody] LoginUserDto dto)
     {
-        UserTokenDto token = _accountService.LoginUser(dto);
+        UserDto token = _accountService.LoginUser(dto);
         return Ok(token);
     }
 }

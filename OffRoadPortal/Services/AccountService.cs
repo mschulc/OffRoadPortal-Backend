@@ -51,7 +51,7 @@ public class AccountService : IAccountService
         _dbContext.SaveChanges();
     }
 
-    public UserTokenDto LoginUser(LoginUserDto dto)
+    public UserDto LoginUser(LoginUserDto dto)
     {
         var user = _dbContext.Users.Include(u => u.Role)
             .FirstOrDefault(u => u.Email == dto.Email);
@@ -63,6 +63,11 @@ public class AccountService : IAccountService
             throw new BadRequestException("Invalid username of password");
 
         var jwtToken = _tokenService.GenerateToken(user);
-        return new UserTokenDto { Id = user.Id, Token = jwtToken };
+        return new UserDto { 
+            Id = user.Id, 
+            Token = jwtToken,
+            Name = $"{user.FirstName} {user.LastName}",
+            Role = user.RoleId
+        };
     }
 }

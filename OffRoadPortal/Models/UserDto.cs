@@ -3,16 +3,15 @@
 // Bachelor's thesis software                              //
 // Author and software owner Maciej Schulc                 //
 // All rights reserved ®                                   //
-// File: IAccountService.cs                                //
+// File: UserDto.cs                                        //
 /////////////////////////////////////////////////////////////
 
-using OffRoadPortal.Models;
+namespace OffRoadPortal.Models;
 
-namespace OffRoadPortal.Interfaces
+public class UserDto
 {
-    public interface IAccountService
-    {
-        void RegisterUser(RegisterUserDto dto);
-        public UserDto LoginUser(LoginUserDto dto);
-    }
+    public long Id { get; set; }
+    public string Name { get; set; }
+    public int Role { get; set; }
+    public string Token { get; set; }
 }
