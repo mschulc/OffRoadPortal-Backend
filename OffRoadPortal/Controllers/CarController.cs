@@ -6,6 +6,7 @@
 // File: CarController.cs                                  //
 /////////////////////////////////////////////////////////////
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
@@ -14,6 +15,8 @@ namespace OffRoadPortal.Controllers;
 
 [ApiController]
 [Route("/user/{userId}/car")]
+[Authorize]
+
 public class CarController : ControllerBase
 {
     private readonly ICarService _carService;

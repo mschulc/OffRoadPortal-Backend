@@ -31,10 +31,11 @@ public class TokenService : ITokenService
     {
         var claims = new List<Claim>()
         {
-            new Claim(ClaimTypes.NameIdentifier, $"{user.Id}"),
-            new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-            new Claim(ClaimTypes.Role, $"{user.Role.Name}"),
-            new Claim("BirthDate", user.BirthDate.Value.ToString("dd-MM-yyyy")),
+            new Claim("Id", $"{user.Id}"),
+            new Claim("Name", $"{user.FirstName} {user.LastName}"),
+            new Claim("Role", $"{user.Role.Name}"),
+            new Claim("Email", user.Email),
+            new Claim("BirthDate", user.BirthDate.Value.ToString()),
         };
         if (!string.IsNullOrEmpty(user.ProfileImageUrl))
         {

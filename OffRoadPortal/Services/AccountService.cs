@@ -66,7 +66,8 @@ public class AccountService : IAccountService
         return new UserDto { 
             Id = user.Id, 
             Token = jwtToken,
-            Name = $"{user.FirstName} {user.LastName}",
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             Role = user.RoleId
         };
     }
