@@ -17,10 +17,12 @@ namespace OffRoadPortal.Controllers;
 public class AccountController : ControllerBase
 {
     private readonly IAccountService _accountService;
+    private readonly IUserService _userService;
 
-    public AccountController(IAccountService accountService)
+    public AccountController(IAccountService accountService, IUserService userService)
     {
         _accountService = accountService;
+        _userService = userService;
     }
 
     [HttpPost("register")]
@@ -36,4 +38,12 @@ public class AccountController : ControllerBase
         UserDto token = _accountService.LoginUser(dto);
         return Ok(token);
     }
+
+    [HttpPatch("update")]
+    public ActionResult Update([FromBody] UpdateUserDto dto)
+    {
+        _userService.Update(dto);
+        return Ok(new Response { Name = "Ok", Status = 200, Message = "Updated"});
+    }
+
 }

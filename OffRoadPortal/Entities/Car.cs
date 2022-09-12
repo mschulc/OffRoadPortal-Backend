@@ -17,7 +17,7 @@ public class Car
     public string? Mark { get; set; }
     public string? Model { get; set; }
     public short? Year { get; set; }
-    public short? Engine { get; set; }
+    public double? Engine { get; set; }
     public FuelType Fuel { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
