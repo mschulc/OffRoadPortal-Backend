@@ -18,4 +18,5 @@ public interface IArticleService
     IEnumerable<ArticleDto> GetAll();
     ArticleDto GetById(long id);
     void Update(long id, UpdateArticleDto dto);
+    public IEnumerable<ArticleDto> GetAllByAuthorId(long id);
 }

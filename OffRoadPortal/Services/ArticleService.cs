@@ -53,6 +53,16 @@ public class ArticleService : IArticleService
         return result;
     }
 
+    public IEnumerable<ArticleDto> GetAllByAuthorId(long id)
+    {
+        var articles = _dbContext.Articles.Include(a => a.ArticleComments).Where(x => x.AuthorId == id).ToList();
+        if (articles is null)
+            throw new NotFoundException("Articles not found");
+
+        var result = _mapper.Map<List<ArticleDto>>(articles);
+        return result;
+    }
+
     public long Create(CreateArticleDto dto)
     {
         var article = _mapper.Map<Article>(dto);

@@ -53,11 +53,11 @@ public class UserService : IUserService
         if (result == PasswordVerificationResult.Failed)
             throw new BadRequestException("Invalid password");
 
-        //var authorizationResult = _authorizationService.AuthorizeAsync
-        //    (_userContextService.User, user, new ResorceOperationRequirement(ResourceOperation.Update)).Result;
+        var authorizationResult = _authorizationService.AuthorizeAsync
+            (_userContextService.User, user, new ResorceOperationRequirement(ResourceOperation.Update)).Result;
 
-        //if (!authorizationResult.Succeeded)
-        //    throw new FrobidException("The resource is not allowed");
+        if (!authorizationResult.Succeeded)
+            throw new FrobidException("The resource is not allowed");
 
         user.FirstName = dto.FirstName;
         user.LastName = dto.LastName;

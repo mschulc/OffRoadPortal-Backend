@@ -42,8 +42,16 @@ public class ArticleController : ControllerBase
         return Ok(article);
     }
 
+    [HttpGet("author/{authorId}")]
+    [Authorize]
+    public ActionResult<IEnumerable<ArticleDto>> GetAllByAuthorId([FromRoute] long authorId)
+    {
+        var articles = _articleService.GetAllByAuthorId(authorId);
+        return Ok(articles);
+    }
+
     [HttpPost]
-    [Authorize(Roles = "Redactor")]
+    [Authorize(Roles = "Admin, Redactor")]
     public ActionResult CreateArticle([FromBody] CreateArticleDto dto)
     {
         var userId = long.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -52,7 +60,7 @@ public class ArticleController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Redactor")]
+    [Authorize(Roles = "Admin, Redactor")]
     public ActionResult Delete([FromRoute] long id)
     {
          _articleService.Delete(id);
