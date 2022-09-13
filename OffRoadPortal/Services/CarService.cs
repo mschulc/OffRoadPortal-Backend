@@ -73,7 +73,7 @@ public class CarService : ICarService
         car.Year = dto.Year;
         car.Engine = dto.Engine;
         car.Fuel = dto.Fuel;
-        car.Description = car.Description;
+        car.Description = dto.Description;
         car.ImageUrl = dto.ImageUrl;
 
         _dbContext.Cars?.Update(car);

@@ -33,7 +33,7 @@ public class CarController : ControllerBase
         return Ok(cars);
     }
 
-    [HttpGet("{carId})")]
+    [HttpGet("{carId}")]
     public ActionResult<CarDto> GetById([FromRoute] long userId, [FromRoute] long carId)
     {
         var car = _carService.GetById(userId, carId);
@@ -58,7 +58,7 @@ public class CarController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public ActionResult Update([FromRoute]long userId, [FromBody] UpdateCarDto dto, [FromRoute] long id)
     {
         if (!ModelState.IsValid)

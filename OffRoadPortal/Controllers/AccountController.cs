@@ -46,4 +46,11 @@ public class AccountController : ControllerBase
         return Ok(new Response { Name = "Ok", Status = 200, Message = "Updated"});
     }
 
+    [HttpPatch("profileImg")]
+    public ActionResult UpdateProfileImage([FromBody] UpdateUserDto dto) 
+    {
+        _userService.UpdateProfileImage(dto.Id, dto.ProfileImageUrl);
+        return Ok(new Response { Name = "Ok", Status = 200, Message = "Updated" });
+    }
+
 }

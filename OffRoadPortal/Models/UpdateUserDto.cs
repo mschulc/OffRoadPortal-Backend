@@ -17,4 +17,5 @@ public class UpdateUserDto
     public string? PasswordHash { get; set; }
     public DateTime? BirthDate { get; set; }
     public string? City { get; set; }
+    public string? ProfileImageUrl { get; set; }
 }

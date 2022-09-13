@@ -26,7 +26,7 @@ public class FileController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult Upload([FromForm]IFormFile file, [FromForm] string rootpath, [FromForm] string userId)
+    public ActionResult Upload([FromForm]IFormFile file, [FromForm] string rootpath)
     {
         if(file != null && file.Length > 0)
         {        
@@ -35,8 +35,7 @@ public class FileController : ControllerBase
             using (var stream = new FileStream(fullPath, FileMode.Create))
             {
                 file.CopyTo(stream);
-            }
-            _userService.UpdateProfileImage(long.Parse(userId), $"/assets/profile/{file.FileName}");
+            }  
             return Ok(new Response { Status = 200, Name = "Ok", Message = "Upload succeeded" });
         }
         throw new BadRequestException("Upload failed");
