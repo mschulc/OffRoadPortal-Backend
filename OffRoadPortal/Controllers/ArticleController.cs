@@ -67,7 +67,7 @@ public class ArticleController : ControllerBase
          return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     [Authorize(Roles = "Admin, Redactor")]
     public ActionResult Update([FromBody] UpdateArticleDto dto, [FromRoute] long id)
     {
