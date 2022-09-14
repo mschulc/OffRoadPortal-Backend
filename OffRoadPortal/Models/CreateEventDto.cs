@@ -17,6 +17,9 @@ public class CreateEventDto
     public long EventOrganizerId { get; set; }
 
     [Required]
+    public string? EventOrganizerName { get; set; }
+
+    [Required]
     [MaxLength(50)]
     public string? EventName { get; set; }
 

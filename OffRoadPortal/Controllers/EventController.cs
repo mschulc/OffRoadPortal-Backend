@@ -6,14 +6,17 @@
 // File: EventController.cs                                //
 /////////////////////////////////////////////////////////////
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OffRoadPortal.Interfaces;
 using OffRoadPortal.Models;
+using System.Security.Claims;
 
 namespace OffRoadPortal.Controllers;
 
 [ApiController]
 [Route("/event")]
+[Authorize]
 public class EventController : ControllerBase
 {
     private readonly IEventService _eventService;
@@ -24,6 +27,7 @@ public class EventController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public ActionResult<IEnumerable<EventDto>> GetAll()
     {
         var events = _eventService.GetAll();
@@ -31,6 +35,7 @@ public class EventController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public ActionResult<EventDto> GetById([FromRoute] long id)
     {
         var _event = _eventService.GetById(id);
@@ -38,13 +43,10 @@ public class EventController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin, Redactor, Premium")]
     public ActionResult CreateEvent([FromBody] CreateEventDto dto)
     {
-        if(!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
+        var userId = long.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
         var createdEventId = _eventService.Create(dto);
         return Created($"/event/{createdEventId}", null);
     }
@@ -56,7 +58,7 @@ public class EventController : ControllerBase
          return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public ActionResult Update([FromBody] UpdateEventDto dto, [FromRoute]long id)
     {
         if(!ModelState.IsValid)
