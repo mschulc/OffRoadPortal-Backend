@@ -7,6 +7,7 @@
 /////////////////////////////////////////////////////////////
 
 using OffRoadPortal.Enums;
+using System.Text.Json.Serialization;
 
 namespace OffRoadPortal.Entities;
 
@@ -22,6 +23,8 @@ public class Event
     public string? EventDescription { get; set; }
     public EventCategory Category { get; set; }
     public VehicleType Type { get; set; }
+
+    [JsonIgnore]
     public virtual List<User>? Participants { get; set; }
     public virtual List<EventComment>? EventComments { get; set; }
 }

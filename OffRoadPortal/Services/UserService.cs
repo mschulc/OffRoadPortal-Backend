@@ -8,6 +8,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using OffRoadPortal.Authorization;
 using OffRoadPortal.Database;
 using OffRoadPortal.Entities;
@@ -67,6 +68,16 @@ public class UserService : IUserService
 
         _dbContext.Users?.Update(user);
         _dbContext.SaveChanges();
+    }
+
+    public User GetUser(long id)
+    {
+        var user = _dbContext.Users.Include(x => x.Cars)
+            .Include(x => x.UserEvents)
+            .FirstOrDefault(a => a.Id == id);
+        if (user is null)
+            throw new NotFoundException("User not found");
+        return user;
     }
 
     private User GetUserById(long id)

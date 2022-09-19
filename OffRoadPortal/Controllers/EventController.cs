@@ -42,8 +42,16 @@ public class EventController : ControllerBase
         return Ok(_event);
     }
 
+    [HttpGet("category/{category}")]
+    [AllowAnonymous]
+    public ActionResult<EventDto> GetByCategory([FromRoute] int category)
+    {
+        var _event = _eventService.GetByCategory(category);
+        return Ok(_event);
+    }
+
     [HttpPost]
-    [Authorize(Roles = "Admin, Redactor, Premium")]
+    [Authorize(Roles = "Admin, Premium")]
     public ActionResult CreateEvent([FromBody] CreateEventDto dto)
     {
         var userId = long.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
@@ -52,6 +60,7 @@ public class EventController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin, Premium")]
     public ActionResult Delete([FromRoute] long id)
     {
          _eventService.Delete(id);
@@ -59,6 +68,7 @@ public class EventController : ControllerBase
     }
 
     [HttpPatch("{id}")]
+    [Authorize(Roles = "Admin, Premium")]
     public ActionResult Update([FromBody] UpdateEventDto dto, [FromRoute]long id)
     {
         if(!ModelState.IsValid)
@@ -66,6 +76,22 @@ public class EventController : ControllerBase
             return BadRequest(ModelState);
         }
          _eventService.Update(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("{id}/join/{userId}")]
+    [AllowAnonymous]
+    public ActionResult Join([FromRoute] long id, [FromRoute] long userId)
+    {
+        _eventService.Join(id, userId);
+        return Ok();
+    }
+
+    [HttpPatch("{id}/exit/{userId}")]
+    [AllowAnonymous]
+    public ActionResult Exit([FromRoute] long id, [FromRoute] long userId)
+    {
+        _eventService.Exit(id, userId);
         return Ok();
     }
 }

@@ -6,6 +6,8 @@
 // File: User.cs                                           //
 /////////////////////////////////////////////////////////////
 
+using System.Text.Json.Serialization;
+
 namespace OffRoadPortal.Entities;
 
 public class User
@@ -23,5 +25,5 @@ public class User
     public int RoleId { get; set; }
     public virtual Role? Role { get; set; }
     public virtual List<Car>? Cars { get; set; }
-    public virtual List<Event>? Events { get; set; }
+    public virtual List<Event>? UserEvents { get; set; }
 }

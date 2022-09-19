@@ -16,7 +16,12 @@ public class OffRoadPortalMappingProfile : Profile
 {
     public OffRoadPortalMappingProfile()
     {
-        //User Mapping
+        //UserEvent Mapping
+        CreateMap<User, User_Event>()
+            .ForMember(ue => ue.UserId, x => x.MapFrom(u => u.Id))
+            .ReverseMap();
+        CreateMap<Event, User_Event>()
+            .ForMember(ue => ue.EventId, x => x.MapFrom(e => e.Id));
 
         //Article Mapping
         CreateMap<Article, ArticleDto>();

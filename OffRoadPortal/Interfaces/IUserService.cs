@@ -6,6 +6,7 @@
 // File: IUserService.cs                                   //
 /////////////////////////////////////////////////////////////
 
+using OffRoadPortal.Entities;
 using OffRoadPortal.Models;
 
 namespace OffRoadPortal.Interfaces;
@@ -14,4 +15,5 @@ public interface IUserService
 {
     void UpdateProfileImage(long id, string path);
     public void Update(UpdateUserDto dto);
+    public User GetUser(long id);
 }

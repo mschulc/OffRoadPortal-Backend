@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OffRoadPortal.Database;
 
@@ -11,9 +12,10 @@ using OffRoadPortal.Database;
 namespace OffRoadPortal.Migrations
 {
     [DbContext(typeof(OffRoadPortalDbContext))]
-    partial class OffRoadPortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220917175639_relation_fix3")]
+    partial class relation_fix3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -339,13 +341,13 @@ namespace OffRoadPortal.Migrations
             modelBuilder.Entity("OffRoadPortal.Entities.User_Event", b =>
                 {
                     b.HasOne("OffRoadPortal.Entities.Event", "Event")
-                        .WithMany()
+                        .WithMany("Participants")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OffRoadPortal.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("UserEvents")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -363,11 +365,15 @@ namespace OffRoadPortal.Migrations
             modelBuilder.Entity("OffRoadPortal.Entities.Event", b =>
                 {
                     b.Navigation("EventComments");
+
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.User", b =>
                 {
                     b.Navigation("Cars");
+
+                    b.Navigation("UserEvents");
                 });
 #pragma warning restore 612, 618
         }

@@ -53,4 +53,10 @@ public class AccountController : ControllerBase
         return Ok(new Response { Name = "Ok", Status = 200, Message = "Updated" });
     }
 
+    [HttpGet("{id}")]
+    public ActionResult GetUserById([FromRoute] long id)
+    {
+        var user = _userService.GetUser(id);
+        return Ok(user);
+    }
 }

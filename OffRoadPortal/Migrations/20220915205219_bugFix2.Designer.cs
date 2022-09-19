@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OffRoadPortal.Database;
 
@@ -11,13 +12,14 @@ using OffRoadPortal.Database;
 namespace OffRoadPortal.Migrations
 {
     [DbContext(typeof(OffRoadPortalDbContext))]
-    partial class OffRoadPortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220915205219_bugFix2")]
+    partial class bugFix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -250,6 +252,9 @@ namespace OffRoadPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("EventId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
@@ -270,32 +275,11 @@ namespace OffRoadPortal.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EventId");
+
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("OffRoadPortal.Entities.User_Event", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("EventId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserEvent");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.ArticleComment", b =>
@@ -327,6 +311,10 @@ namespace OffRoadPortal.Migrations
 
             modelBuilder.Entity("OffRoadPortal.Entities.User", b =>
                 {
+                    b.HasOne("OffRoadPortal.Entities.Event", null)
+                        .WithMany("Participants")
+                        .HasForeignKey("EventId");
+
                     b.HasOne("OffRoadPortal.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
@@ -334,25 +322,6 @@ namespace OffRoadPortal.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("OffRoadPortal.Entities.User_Event", b =>
-                {
-                    b.HasOne("OffRoadPortal.Entities.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OffRoadPortal.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.Article", b =>
@@ -363,6 +332,8 @@ namespace OffRoadPortal.Migrations
             modelBuilder.Entity("OffRoadPortal.Entities.Event", b =>
                 {
                     b.Navigation("EventComments");
+
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.User", b =>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OffRoadPortal.Database;
 
@@ -11,9 +12,10 @@ using OffRoadPortal.Database;
 namespace OffRoadPortal.Migrations
 {
     [DbContext(typeof(OffRoadPortalDbContext))]
-    partial class OffRoadPortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220917174806_relation_fix2")]
+    partial class relation_fix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,6 +161,9 @@ namespace OffRoadPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("EventId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("EventName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -177,7 +182,14 @@ namespace OffRoadPortal.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Events");
                 });
@@ -316,6 +328,17 @@ namespace OffRoadPortal.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OffRoadPortal.Entities.Event", b =>
+                {
+                    b.HasOne("OffRoadPortal.Entities.Event", null)
+                        .WithMany("Participants")
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("OffRoadPortal.Entities.User", null)
+                        .WithMany("UserEvents")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("OffRoadPortal.Entities.EventComment", b =>
                 {
                     b.HasOne("OffRoadPortal.Entities.Event", null)
@@ -363,11 +386,15 @@ namespace OffRoadPortal.Migrations
             modelBuilder.Entity("OffRoadPortal.Entities.Event", b =>
                 {
                     b.Navigation("EventComments");
+
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("OffRoadPortal.Entities.User", b =>
                 {
                     b.Navigation("Cars");
+
+                    b.Navigation("UserEvents");
                 });
 #pragma warning restore 612, 618
         }

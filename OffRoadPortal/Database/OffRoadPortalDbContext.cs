@@ -22,12 +22,17 @@ namespace OffRoadPortal.Database
         public DbSet<User>? Users { get; set; }
         public DbSet<Role>? Roles { get; set; }
         public DbSet<Car>? Cars { get; set; }
+        public DbSet<User_Event>? UserEvent { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //User Entity
             modelBuilder.Entity<User>()
                 .Property(u => u.Email).IsRequired();
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.UserEvents)
+                .WithMany(x => x.Participants)
+                .UsingEntity<User_Event>();
 
             //Role Entity
             modelBuilder.Entity<Role>()
@@ -72,6 +77,10 @@ namespace OffRoadPortal.Database
                 .Property(e => e.Category).IsRequired();
             modelBuilder.Entity<Event>()
                 .Property(e => e.Type).IsRequired();
+            modelBuilder.Entity<Event>()
+                .HasMany(x => x.Participants)
+                .WithMany(x => x.UserEvents)
+                .UsingEntity<User_Event>();
 
             //EventComment Entity
             modelBuilder.Entity<EventComment>()
